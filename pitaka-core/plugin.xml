@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="zen.ilgo.pitaka.core.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="RCP Perspective"
+            class="zen.ilgo.pitaka.core.Perspective"
+            id="zen.ilgo.pitaka.core.perspective">
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="zen.ilgo.pitaka.core.application"
+            name="Pitaka Core">
+         <property
+               name="appName"
+               value="Pitaka Core">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="zen.ilgo.pitaka.collections.CollectionsView"
+            id="zen.ilgo.pitaka.core.collections"
+            name="CollectionsView"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="zen.ilgo.pitaka.browser.HtmlReader"
+            default="false"
+            icon="icons/book_open.png"
+            id="zen.ilgo.pitaka.core.HtmlReader"
+            name="HtmlReader">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="zen.ilgo.pitaka.core.CallBrowser"
+            id="pitaka-core.callBrowser"
+            name="Call Browser">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.CreateCollectionHandler"
+            id="zen.ilgo.pitaka.collections.createCollection"
+            name="Create Collection">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.DeleteCollectionHandler"
+            id="zen.ilgo.pitaka.collections.deleteCollection"
+            name="Delete Collection">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.AddResourceHandler"
+            id="zen.ilgo.pitaka.collections.addResource"
+            name="Add Resource">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.DeleteResourceHandler"
+            id="zen.ilgo.pitaka.collections.deleteResource"
+            name="Delete Resource">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:zen.ilgo.pitaka.core.collections">
+         <command
+               commandId="zen.ilgo.pitaka.collections.createCollection"
+               label="Create Collection"
+               style="push">
+         </command>
+         <command
+               commandId="zen.ilgo.pitaka.collections.deleteCollection"
+               label="Delete Collection"
+               style="push">
+         </command>
+         <separator
+               name="zen.ilgo.pitaka.collections.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="zen.ilgo.pitaka.collections.addResource"
+               label="Add Resource"
+               style="push">
+         </command>
+         <command
+               commandId="zen.ilgo.pitaka.collections.deleteResource"
+               label="Delete Resource"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>
