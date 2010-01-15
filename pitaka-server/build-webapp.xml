@@ -5,7 +5,7 @@
 	<property name="webapp.classes.dir" location="${pitaka.dir}/webapps/pitaka/WEB-INF/classes" />
 
 	<target name="make-webapp">
-		<copy todir="${pitaka.dir}">
+		<copy todir="${pitaka.dir}/webapps">
 			<fileset dir="webapps" />
 		</copy>
 		<copy todir="${webapp.classes.dir}">

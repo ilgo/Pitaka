@@ -47,8 +47,7 @@ public class CallBrowser extends AbstractHandler implements IHandler {
 					//String contentPage = queryContents((Resource) obj);
 					Resource resource = (Resource) obj;
 					String id = resource.getId();
-					String path = resource.getParentCollection().getName();
-					
+					String path = resource.getParentCollection().getName();					
 					String url = StartServer.SERVER + "/content?id=" + path + "/" + id;
 					
 					System.out.println(url);

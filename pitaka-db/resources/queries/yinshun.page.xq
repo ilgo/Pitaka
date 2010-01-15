@@ -1,12 +1,12 @@
 xquery version "1.0";
 
-let $document := doc(\"%s\")
-let $current := \"%s\"
-let $next := \"%s\"
-let $prev := \"%s\"
+let $document := doc("%s")
+let $current := %s
+let $next := %s
+let $prev := %s
 let $title := $document//title/text()
 let $body := $document//body/*
-let $pages := $document//pb[@type=\"html\"]
+let $pages := $document//pb[@type="html"]
 let $idx1 := index-of($body, $pages[position() = 1])
 let $idxs := insert-before($idx1, count($idx1)+1, count($body))
 
@@ -53,17 +53,10 @@ div {
 
 -->
 </style>
-<script language="JavaScript">
-<!--
-function page(n) {
-    getPageFunction(n);
-}
--->
-</script> 
 <title>{$title}</title>
 </head>
 <body>
-	<h1>$title</h1>
+	<h1>{$title}</h1>
 	<table>
 	<tr><td>Previous Page</td></tr>
 	<tr><td>Contents</td></tr>

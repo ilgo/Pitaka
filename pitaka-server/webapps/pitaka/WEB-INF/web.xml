@@ -14,4 +14,14 @@
     <servlet-name>Content</servlet-name>
     <url-pattern>/content</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <display-name>Page</display-name>
+    <servlet-name>Page</servlet-name>
+    <servlet-class>zen.ilgo.pitaka.servlet.Page</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Page</servlet-name>
+    <url-pattern>/page</url-pattern>
+  </servlet-mapping>
 </web-app>
