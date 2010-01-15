@@ -1,0 +1,10 @@
+#ignoring files for Pitaka project
+#
+# ilgo@Bangkok 
+#-----------------------------------
+
+de.vogella*
+.metadata/*
+*.class
+*/bin/*
+*~
