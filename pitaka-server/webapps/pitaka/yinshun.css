@@ -1,0 +1,95 @@
+* {
+	font : 16pt "AR PL UKai TW";
+	line-height : 1.4em;
+}
+
+h1 {
+	color : red;
+	font-size : 130%;
+}
+
+/* Paragraphs
+*************************/
+pb[type="book"] {
+	font-family : monospace;
+	font-size : 80%;
+	color : #322cc5;	
+}
+p[type="begin"] {
+	text-indent : 25%;	
+}
+div[level="0"] {
+	font-size : 130%;
+	font-weight : bolder;
+	color : #e96b16;
+}
+div[level="1"] {
+	font-size : 120%
+	text-indent : 4em;
+	margin-left : 1em;
+	font-weight : bold;
+	color : #af581d;
+}
+div[level="2"] {
+	font-size : 110%;
+	margin-left : 2em;
+	font-style : italic;
+	color : #7e4721;
+}
+anchor[type="remark"] {
+	font-family : monospace;
+	font-size : 66%;
+	letter-spacing : 50%;
+}
+
+/* Sanskrit - Pali Names
+*************************/
+distinct {
+	font-family : serif;
+	font-style : italic;
+	font-size : 80%;
+	margin-left : 0.1em;
+	margin-right : 0.5em;
+	color : #936b67; 
+}
+
+/* Image Tables
+*************************/
+graphic table {
+	border: 2px solid #444;
+	background-color : #9aeaf3;
+}
+
+/* Content indention
+*************************/
+.level_1 {
+	text-indent : 1em;
+}
+.level_2 {
+	text-indent : 2em;
+}
+.level_3 {
+	text-indent : 3em;
+}
+.level_4 {
+	text-indent : 4em;
+}
+.level_5 {
+	text-indent : 5em;
+}
+.level_6 {
+	text-indent : 6em;
+}
+a.level_1 {
+	margin-left : 1em;
+}
+a.level_2 {
+	margin-left : 2em;
+}
+a.level_3 {
+	margin-left : 3em;
+}
+.page {
+	text-indent : 2em;
+	text-align : right;
+}

@@ -1,0 +1,70 @@
+Pitaka Components & Roadmap
+---------------------------
+
+1. eXist xml-db
+2. jetty embedded
+3. Eclipse plugins
+
+each has the following sub-components
+	1. import docs
+	2. indexing
+	3. searching collections docs
+	4. viewing docs
+	5. editing docs
+	7. dictionary management
+	8. view/edit dictionary support
+	9. collecting & generating metadata, mining
+
+
+-------------------------
+admin vs. user funtionality
+local vs. remote repositories
+collection structure, analitic data table
+
+---------------------------
+
+Level 1:
+	- import docs cmd-line (Yinshun + Taisho + Soku)
+	- view docs in browser (view content and pages, )
+	- installer 
+	- eclipse client
+
+Level 2:
+	- dict import
+	- dynamic dict generation
+	- dict content assist
+
+Level 3:
+	- index docs (make them searchable with lucene)
+	- search docs (search for...???)
+	- collecting statistical data
+	- searching stat data
+	- view stat data
+
+Level 4:
+	- editing docs
+	- versioning docs
+	- updating docs
+	- viewing edited docs
+	- viwing version history
+
+Level 5: 
+	- publish as odf, pdf
+	
+Level 6:
+	- Data mining
+
+---------------------------------------
+Reasearching:
+	Xslt, XPath, xml (O'Reilley Learning XML)
+	html, css
+	Eclipse plugin - (3rd ed)
+	Jetty
+	eXist
+	Git vcs (Git Pro)
+	Simple Webapp (GWT?, Tapestry?, JSP?)
+	Data Mining
+
+How does gwt integrate with servlets?
+How to embed jetty into an application, what dir-structure, where put war's
+
