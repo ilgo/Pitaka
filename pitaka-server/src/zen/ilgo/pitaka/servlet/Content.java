@@ -41,7 +41,9 @@ public class Content extends HttpServlet {
 			response.setContentType("text/html");
 			response.setCharacterEncoding("utf8");
 			PrintWriter writer = response.getWriter();
-			writer.println("<html><body>");
+			writer.println("<html><head>");
+			writer.println("<link href=\"yinshun.css\" rel=\"stylesheet\" type=\"text/css\" />");
+			writer.println("</head><body>");
 			writer.println(getPageBody(data, resourceId));
 			writer.println("</body></html>");
 			writer.close();
@@ -158,7 +160,7 @@ public class Content extends HttpServlet {
 
 		String level = div.attributeValue("level");
 		Element newDiv = DocumentHelper.createElement(name);
-		newDiv.addAttribute("class", level);
+		newDiv.addAttribute("class", "level_" + level);
 		newDiv.setText(div.getText());
 		return newDiv;
 	}

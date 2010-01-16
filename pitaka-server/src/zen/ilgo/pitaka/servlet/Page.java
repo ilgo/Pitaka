@@ -24,7 +24,7 @@ public class Page extends HttpServlet {
 	private static final long serialVersionUID = 8148909500798704155L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		try {
 			String resourceId = request.getParameter("id");
 			String page = request.getParameter("page");
@@ -33,21 +33,22 @@ public class Page extends HttpServlet {
 			response.setCharacterEncoding("utf8");
 			PrintWriter writer = response.getWriter();
 			writer.println(queryPageData(resourceId, page));
-//			writer.println("<html><body>");
-//			writer.println("<p>");
-//			writer.println(resourceId);
-//			writer.println("</p>");
-//			writer.println("<p>");
-//			writer.println(page);
-//			writer.println("</p>");
-//			writer.println("</body></html>");
+			// writer.println("<html><body>");
+			// writer.println("<p>");
+			// writer.println(resourceId);
+			// writer.println("</p>");
+			// writer.println("<p>");
+			// writer.println(page);
+			// writer.println("</p>");
+			// writer.println("</body></html>");
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private String queryPageData(String resourceId, String page) throws XMLDBException {
+
+	private String queryPageData(String id, String page)
+			throws XMLDBException {
 
 		Session session = Session.getInstance();
 		Collection col = session.getRootCollection();
@@ -69,9 +70,15 @@ public class Page extends HttpServlet {
 		}
 		String rawQuery = sb.toString();
 		int pageNr = Integer.valueOf(page);
-		String prev =  Integer.toString(pageNr - 1);
+		String prev;
+		if (pageNr == 1) {
+			prev = "1";
+		} else {
+			prev = Integer.toString(pageNr - 1);
+		}
 		String next = Integer.toString(pageNr + 1);
-		String query = String.format(rawQuery, resourceId, page, next, prev);
+		
+		String query = String.format(rawQuery, id, page, next);
 		sb = new StringBuilder();
 		ResourceSet resultSet = service.query(query);
 		ResourceIterator i = resultSet.getIterator();
@@ -80,6 +87,18 @@ public class Page extends HttpServlet {
 			sb.append((String) r.getContent());
 			sb.append("\n");
 		}
-		return sb.toString();
+		String rawPage = sb.toString();
+		Object[] args = new String[]{id, prev, id, id, next};
+		String navi = String.format(navigation, args);
+		
+		System.out.println(navi);
+		return rawPage.replaceAll("NAVIGATION", navi);
+		
 	}
+
+	private String navigation = "<table><tr>"
+			+ "<td><a href=\"http://localhost:8080/pitaka/page?id=%s&page=%s\">Previous Page</a></td>"
+			+ "<td><a href=\"http://localhost:8080/pitaka/content?id=%s\">Contents</a></td>"
+			+ "<td><a href=\"http://localhost:8080/pitaka/page?id=%s&page=%s\">Next Page</a></td>"
+			+ "</tr></table>";
 }
