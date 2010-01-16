@@ -4,6 +4,7 @@
 #-----------------------------------
 
 de.vogella*
+exist-libs*
 .metadata/*
 *.class
 */bin/*
