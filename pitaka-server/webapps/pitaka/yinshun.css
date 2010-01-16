@@ -53,11 +53,24 @@ distinct {
 	color : #936b67; 
 }
 
+/* Navigation Table
+*************************/
+a[type="navi"] {
+	font-family : serif;
+	font-size : 66%;
+	margin-left : 0.5em;
+	margin-right : 0.5em;
+	color : black;
+}
+
 /* Image Tables
 *************************/
 graphic table {
 	border: 2px solid #444;
 	background-color : #9aeaf3;
+}
+graphic table tr td {
+	font-size : 75%;
 }
 
 /* Content indention

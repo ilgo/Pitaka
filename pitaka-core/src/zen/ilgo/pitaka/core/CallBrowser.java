@@ -50,7 +50,6 @@ public class CallBrowser extends AbstractHandler implements IHandler {
 					String path = resource.getParentCollection().getName();					
 					String url = StartServer.SERVER + "/content?id=" + path + "/" + id;
 					
-					System.out.println(url);
 					HtmlEditorInput input = new HtmlEditorInput(url);
 					page.openEditor(input, HtmlReader.ID);
 

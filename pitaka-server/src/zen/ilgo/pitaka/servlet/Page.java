@@ -90,15 +90,13 @@ public class Page extends HttpServlet {
 		String rawPage = sb.toString();
 		Object[] args = new String[]{id, prev, id, id, next};
 		String navi = String.format(navigation, args);
-		
-		System.out.println(navi);
 		return rawPage.replaceAll("NAVIGATION", navi);
 		
 	}
 
-	private String navigation = "<table><tr>"
-			+ "<td><a href=\"http://localhost:8080/pitaka/page?id=%s&page=%s\">Previous Page</a></td>"
-			+ "<td><a href=\"http://localhost:8080/pitaka/content?id=%s\">Contents</a></td>"
-			+ "<td><a href=\"http://localhost:8080/pitaka/page?id=%s&page=%s\">Next Page</a></td>"
-			+ "</tr></table>";
+	private String navigation = "<table type=\"navi\"><tr>\n"
+			+ "<td><a type=\"navi\" href=\"http://localhost:8080/pitaka/page?id=%s&page=%s\">Previous Page</a></td>\n"
+			+ "<td><a type=\"navi\" href=\"http://localhost:8080/pitaka/content?id=%s\">Contents</a></td>\n"
+			+ "<td><a type=\"navi\" href=\"http://localhost:8080/pitaka/page?id=%s&page=%s\">Next Page</a></td>\n"
+			+ "</tr></table>\n";
 }
