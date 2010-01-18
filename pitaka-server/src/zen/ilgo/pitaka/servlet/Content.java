@@ -26,7 +26,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XPathQueryService;
 
 import zen.ilgo.pitaka.db.Session;
-import zen.ilgo.pitaka.server.StartServer;
+import zen.ilgo.pitaka.server.JettyServer;
 
 public class Content extends HttpServlet {
 
@@ -135,7 +135,7 @@ public class Content extends HttpServlet {
 		Element a = transformDivElement(div, "a");
 		a.setName("a");
 		String htmPage = pb.attributeValue("page");
-		String linkFmt = StartServer.SERVER + "/page?id=%s&page=%s";
+		String linkFmt = JettyServer.SERVER + "/page?id=%s&page=%s";
 		String link = String.format(linkFmt, id, htmPage);
 		a.addAttribute("href", link);
 		return tableEntry(a.asXML(), page);
