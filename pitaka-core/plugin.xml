@@ -77,6 +77,11 @@
             id="zen.ilgo.pitaka.collections.deleteResource"
             name="Delete Resource">
       </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.CreateCollectionFromDir"
+            id="zen.ilgo.pitaka.collections.CollectionFromDir"
+            name="Collection from Directory">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -85,6 +90,11 @@
          <command
                commandId="zen.ilgo.pitaka.collections.createCollection"
                label="Create Collection"
+               style="push">
+         </command>
+         <command
+               commandId="zen.ilgo.pitaka.collections.CollectionFromDir"
+               label="Collection from Directory"
                style="push">
          </command>
          <command
