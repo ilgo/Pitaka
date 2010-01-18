@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import zen.ilgo.pitaka.server.StartServer;
+import zen.ilgo.pitaka.server.JettyServer;
 
 /**
  * This class controls all aspects of the application's execution
@@ -14,7 +14,8 @@ import zen.ilgo.pitaka.server.StartServer;
 public class Application implements IApplication {
 
 	public static Display DISPLAY;
-	
+	private JettyServer jettyServer;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -22,13 +23,13 @@ public class Application implements IApplication {
 	 * IApplicationContext)
 	 */
 	public Object start(IApplicationContext context) throws Exception {
+
 		DISPLAY = PlatformUI.createDisplay();
-		//Session.setDisplay(display);
-		
-		Thread jetty = new Thread(new StartServer());
-		jetty.start();
+		jettyServer = new JettyServer();
+		Thread jetty = new Thread(jettyServer);
 
 		try {
+			jetty.start();
 			int returnCode = PlatformUI.createAndRunWorkbench(DISPLAY,
 					new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART)
@@ -37,8 +38,8 @@ public class Application implements IApplication {
 				return IApplication.EXIT_OK;
 		} finally {
 			DISPLAY.dispose();
+			jettyServer.stop();
 		}
-
 	}
 
 	/*
@@ -47,6 +48,8 @@ public class Application implements IApplication {
 	 * @see org.eclipse.equinox.app.IApplication#stop()
 	 */
 	public void stop() {
+
+		jettyServer.stop();
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		if (workbench == null)
 			return;
