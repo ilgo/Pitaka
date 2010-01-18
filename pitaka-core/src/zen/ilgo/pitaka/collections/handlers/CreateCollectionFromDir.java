@@ -21,8 +21,7 @@ public class CreateCollectionFromDir extends AbstractCollectionHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().getSelection();
+		ISelection selection = getCollectionViewSelection(event);
 		if (selection != null & selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelection = (IStructuredSelection) selection;
 			final Object object = strucSelection.getFirstElement();
@@ -85,10 +84,12 @@ public class CreateCollectionFromDir extends AbstractCollectionHandler {
 					.beginTask("Preparing to import Resources.",
 							(int) totalSize);
 			resources = dir.listFiles();
-			
+
 			try {
-			System.out.println("new Col: " + root.getName() + "/" + dir.getName());
-			col = dbCol.createCollection(root.getName() + "/" + dir.getName());
+				System.out.println("new Col: " + root.getName() + "/"
+						+ dir.getName());
+				col = dbCol.createCollection(root.getName() + "/"
+						+ dir.getName());
 			} catch (XMLDBException e) {
 				e.printStackTrace();
 			}

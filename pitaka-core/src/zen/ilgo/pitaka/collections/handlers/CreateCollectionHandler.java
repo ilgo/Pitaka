@@ -15,8 +15,8 @@ public class CreateCollectionHandler extends AbstractCollectionHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().getSelection();
+
+		ISelection selection = getCollectionViewSelection(event);
 		if (selection != null & selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelection = (IStructuredSelection) selection;
 			Object object = strucSelection.getFirstElement();
@@ -26,12 +26,16 @@ public class CreateCollectionHandler extends AbstractCollectionHandler {
 					Collection col = (Collection) object;
 					Shell shell = HandlerUtil.getActiveWorkbenchWindow(event)
 							.getShell();
+
 					CreateCollectionDialog dialog = new CreateCollectionDialog(
 							shell, col.getName());
-					if (dialog.open() == Window.OK) {
+					int win;
+					if ((win = dialog.open()) == Window.OK) {
 						String colName = dialog.getValue();
 						dbCol.createCollection(col.getName() + "/" + colName);
 						refresh(object);
+					} else {
+						System.out.println("Error:" + win);
 					}
 
 				} catch (XMLDBException e) {

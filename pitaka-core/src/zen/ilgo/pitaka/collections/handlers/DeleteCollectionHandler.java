@@ -4,7 +4,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 
@@ -12,12 +11,12 @@ public class DeleteCollectionHandler extends AbstractCollectionHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().getSelection();
+
+		ISelection selection = getCollectionViewSelection(event);
 		if (selection != null & selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelection = (IStructuredSelection) selection;
 			Object object = strucSelection.getFirstElement();
-			//dbCol.removeCollection(object);
+			// dbCol.removeCollection(object);
 
 			if (object instanceof Collection) {
 				try {
@@ -27,7 +26,7 @@ public class DeleteCollectionHandler extends AbstractCollectionHandler {
 					if (root.equals("/db/Texts") || root.equals("/db/Users")) {
 						// do not allow to delete the basic collections
 					} else {
-						Collection parent  = dbCol.removeCollection(col);
+						Collection parent = dbCol.removeCollection(col);
 						refresh(parent);
 					}
 				} catch (XMLDBException e) {

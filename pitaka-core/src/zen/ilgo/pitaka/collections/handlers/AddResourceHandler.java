@@ -20,14 +20,13 @@ public class AddResourceHandler extends AbstractCollectionHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().getSelection();
+		ISelection selection = getCollectionViewSelection(event);
 		if (selection != null & selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelection = (IStructuredSelection) selection;
 			final Object object = strucSelection.getFirstElement();
 			if (object instanceof Collection) {
 
-				final Collection col = (Collection)object;
+				final Collection col = (Collection) object;
 				Shell shell = HandlerUtil.getActiveWorkbenchWindow(event)
 						.getShell();
 				FileDialog fileDialog = new FileDialog(shell);
