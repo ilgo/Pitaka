@@ -2,14 +2,14 @@ package zen.ilgo.pitaka.collections.handlers;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
-
-import zen.ilgo.pitaka.dialogs.CreateCollectionDialog;
 
 public class CreateCollectionHandler extends AbstractCollectionHandler {
 
@@ -23,23 +23,17 @@ public class CreateCollectionHandler extends AbstractCollectionHandler {
 			if (object instanceof Collection) {
 				try {
 
+					Collection col = (Collection) object;
+					Shell shell = HandlerUtil.getActiveWorkbenchWindow(event)
+							.getShell();
 					CreateCollectionDialog dialog = new CreateCollectionDialog(
-							HandlerUtil.getActiveWorkbenchWindow(event)
-									.getShell());
-					dialog.create();
+							shell, col.getName());
 					if (dialog.open() == Window.OK) {
-						String colName = dialog.getCollectionName();
-						if (colName != null) {
-							String root = ((Collection) object).getName();
-							dbCol.createCollection(root + "/" + colName);
-							refresh(object);
-						}
+						String colName = dialog.getValue();
+						dbCol.createCollection(col.getName() + "/" + colName);
+						refresh(object);
 					}
 
-					String root = ((Collection) object).getName();
-					dbCol.createCollection(root + "/"
-							+ dialog.getCollectionName());
-					refresh(object);
 				} catch (XMLDBException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -49,4 +43,30 @@ public class CreateCollectionHandler extends AbstractCollectionHandler {
 		return null;
 	}
 
+	/**
+	 * Wraps an InputDialog So i dont need to pass all thos params to the
+	 * constructor
+	 * 
+	 * @author ilgo
+	 * 
+	 */
+	class CreateCollectionDialog {
+
+		private final InputDialog inputDialog;
+
+		public CreateCollectionDialog(Shell parentShell, String parentName) {
+			String dialogTitle = "Create New Collection";
+			String dialogMessage = "Enter a Collection Name";
+			inputDialog = new InputDialog(parentShell, dialogTitle,
+					dialogMessage, "", null);
+		}
+
+		public String getValue() {
+			return inputDialog.getValue();
+		}
+
+		public int open() {
+			return inputDialog.open();
+		}
+	}
 }

@@ -17,17 +17,17 @@ public class DeleteCollectionHandler extends AbstractCollectionHandler {
 		if (selection != null & selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelection = (IStructuredSelection) selection;
 			Object object = strucSelection.getFirstElement();
-			dbCol.removeCollection(object);
+			//dbCol.removeCollection(object);
 
 			if (object instanceof Collection) {
 				try {
 
-					String root = ((Collection) object).getName();
+					Collection col = (Collection) object;
+					String root = col.getName();
 					if (root.equals("/db/Texts") || root.equals("/db/Users")) {
 						// do not allow to delete the basic collections
 					} else {
-						Collection parent = dbCol.getParent(object);
-						dbCol.removeCollection(root);
+						Collection parent  = dbCol.removeCollection(col);
 						refresh(parent);
 					}
 				} catch (XMLDBException e) {

@@ -7,7 +7,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Resource;
-import org.xmldb.api.base.XMLDBException;
 
 public class DeleteResourceHandler extends AbstractCollectionHandler {
 
@@ -18,17 +17,10 @@ public class DeleteResourceHandler extends AbstractCollectionHandler {
 		if (selection != null & selection instanceof IStructuredSelection) {
 			IStructuredSelection strucSelection = (IStructuredSelection) selection;
 			Object object = strucSelection.getFirstElement();
-			dbCol.removeCollection(object);
 			if (object instanceof Resource) {
-				try {
-					String id = ((Resource) object).getId();
-					Collection parent = dbCol.getParent(object);
-					dbCol.removeResource(parent, id);
-					refresh(parent);
-				} catch (XMLDBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Resource resource = (Resource) object;
+				Collection parent = dbCol.removeResource(resource);
+				refresh(parent);
 			}
 		}
 		return null;
