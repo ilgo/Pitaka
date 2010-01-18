@@ -26,7 +26,7 @@
       <Arg>
         <New class="org.mortbay.jetty.deployer.WebAppDeployer">
           <Set name="contexts"><Ref id="Contexts"/></Set>
-          <Set name="webAppDir"><SystemProperty name="jetty.home" default="."/>/webapps</Set>
+          <Set name="webAppDir"><SystemProperty name="jetty.home" default="tmp/pitaka"/>/webapps</Set>
         </New>
       </Arg>
     </Call>
