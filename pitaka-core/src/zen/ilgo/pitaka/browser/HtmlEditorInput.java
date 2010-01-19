@@ -7,9 +7,12 @@ import org.eclipse.ui.IPersistableElement;
 public class HtmlEditorInput implements IEditorInput {
 
 	private String url;
+	private String title;
 
-	public HtmlEditorInput(String url) {
+	public HtmlEditorInput(String url, String title) {
 		this.url = url;
+		this.title = title;
+
 	}
 
 	public String getUrl() {
@@ -33,11 +36,6 @@ public class HtmlEditorInput implements IEditorInput {
 	}
 
 	@Override
-	public String getName() {
-		return "Testing browser";
-	}
-
-	@Override
 	public IPersistableElement getPersistable() {
 		// TODO Auto-generated method stub
 		return null;
@@ -45,7 +43,7 @@ public class HtmlEditorInput implements IEditorInput {
 
 	@Override
 	public String getToolTipText() {
-		return "Testing browser";
+		return title;
 	}
 
 	@Override
@@ -69,6 +67,11 @@ public class HtmlEditorInput implements IEditorInput {
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return title;
 	}
 
 }
