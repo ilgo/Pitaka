@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
@@ -17,38 +20,43 @@ import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XPathQueryService;
 
+import zen.ilgo.pitaka.server.Activator;
 import zen.ilgo.pitaka.db.Session;
 
 public class Page extends HttpServlet {
 
 	private static final long serialVersionUID = 8148909500798704155L;
+	private static String id = Content.class.toString();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
+		ILog log = Activator.getDefault().getLog();
+		String resourceId = null;
+		String page = null;
+		IStatus status = null;
 		try {
-			String resourceId = request.getParameter("id");
-			String page = request.getParameter("page");
+			resourceId = request.getParameter("id");
+			page = request.getParameter("page");
 
 			response.setContentType("text/html");
 			response.setCharacterEncoding("utf8");
 			PrintWriter writer = response.getWriter();
 			writer.println(queryPageData(resourceId, page));
-			// writer.println("<html><body>");
-			// writer.println("<p>");
-			// writer.println(resourceId);
-			// writer.println("</p>");
-			// writer.println("<p>");
-			// writer.println(page);
-			// writer.println("</p>");
-			// writer.println("</body></html>");
 			writer.close();
+
+			status = new Status(IStatus.INFO, id,
+					"Page Servlet: " + resourceId, null);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			status = new Status(IStatus.ERROR, id, "Page Servlet: "
+					+ resourceId, e);
+
+		} finally {
+			log.log(status);
 		}
 	}
 
-	private String queryPageData(String id, String page)
-			throws XMLDBException {
+	private String queryPageData(String id, String page) throws XMLDBException, IOException {
 
 		Session session = Session.getInstance();
 		Collection col = session.getRootCollection();
@@ -60,14 +68,9 @@ public class Page extends HttpServlet {
 		StringBuilder sb = new StringBuilder();
 		char[] buffer = new char[1024];
 		int read;
-		try {
-			while ((read = bis.read(buffer)) != -1) {
+		while ((read = bis.read(buffer)) != -1) {
 				sb.append(buffer, 0, read);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		String rawQuery = sb.toString();
 		int pageNr = Integer.valueOf(page);
 		String prev;
@@ -77,7 +80,7 @@ public class Page extends HttpServlet {
 			prev = Integer.toString(pageNr - 1);
 		}
 		String next = Integer.toString(pageNr + 1);
-		
+
 		String query = String.format(rawQuery, id, page, next);
 		sb = new StringBuilder();
 		ResourceSet resultSet = service.query(query);
@@ -88,10 +91,10 @@ public class Page extends HttpServlet {
 			sb.append("\n");
 		}
 		String rawPage = sb.toString();
-		Object[] args = new String[]{id, prev, id, id, next};
+		Object[] args = new String[] { id, prev, id, id, next };
 		String navi = String.format(navigation, args);
 		return rawPage.replaceAll("NAVIGATION", navi);
-		
+
 	}
 
 	private String navigation = "<table type=\"navi\"><tr>\n"

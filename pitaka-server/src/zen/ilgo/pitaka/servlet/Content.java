@@ -18,6 +18,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
@@ -26,33 +29,48 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XPathQueryService;
 
 import zen.ilgo.pitaka.db.Session;
+import zen.ilgo.pitaka.server.Activator;
 import zen.ilgo.pitaka.server.JettyServer;
 
 public class Content extends HttpServlet {
 
 	private static final long serialVersionUID = -3680019723824785270L;
+	private static String id = Content.class.toString();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
+		ILog log = Activator.getDefault().getLog();
+		String resourceId = null;
+		IStatus status = null;
 		try {
-			String resourceId = request.getParameter("id");
+			resourceId = request.getParameter("id");
 			String data = queryContentsData(resourceId);
 
 			response.setContentType("text/html");
 			response.setCharacterEncoding("utf8");
 			PrintWriter writer = response.getWriter();
 			writer.println("<html><head>");
-			writer.println("<link href=\"yinshun.css\" rel=\"stylesheet\" type=\"text/css\" />");
+			writer
+					.println("<link href=\"yinshun.css\" rel=\"stylesheet\" type=\"text/css\" />");
 			writer.println("</head><body>");
 			writer.println(getPageBody(data, resourceId));
 			writer.println("</body></html>");
 			writer.close();
+
+			status = new Status(IStatus.INFO, id, "Content Servlet: "
+					+ resourceId, null);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			status = new Status(IStatus.ERROR, id, "Content Servlet: "
+					+ resourceId, e);
+
+		} finally {
+			log.log(status);
 		}
 	}
 
-	private String queryContentsData(String resourceId) throws XMLDBException {
+	private String queryContentsData(String resourceId) throws XMLDBException,
+			IOException {
 
 		Session session = Session.getInstance();
 		Collection col = session.getRootCollection();
@@ -64,14 +82,10 @@ public class Content extends HttpServlet {
 		StringBuilder sb = new StringBuilder();
 		char[] buffer = new char[1024];
 		int read;
-		try {
-			while ((read = bis.read(buffer)) != -1) {
-				sb.append(buffer, 0, read);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while ((read = bis.read(buffer)) != -1) {
+			sb.append(buffer, 0, read);
 		}
+
 		String query = sb.toString();
 		query = query.replace("DOCUMENT", resourceId);
 		sb = new StringBuilder();
@@ -85,21 +99,17 @@ public class Content extends HttpServlet {
 		return sb.toString();
 	}
 
-	private String getPageBody(String data, String id) {
+	private String getPageBody(String data, String id) throws DocumentException {
 
 		StringBuilder sb = new StringBuilder();
-		try {
-			Document doc = DocumentHelper.parseText(data);
-			String title = doc.selectSingleNode("data/title").getText();
-			String author = doc.selectSingleNode("data/author").getText();
-			String extent = doc.selectSingleNode("data/extent").getText();
-			sb.append(String.format(pageFmt, title, author, extent));
-			sb.append(getContent(doc, id));
 
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Document doc = DocumentHelper.parseText(data);
+		String title = doc.selectSingleNode("data/title").getText();
+		String author = doc.selectSingleNode("data/author").getText();
+		String extent = doc.selectSingleNode("data/extent").getText();
+		sb.append(String.format(pageFmt, title, author, extent));
+		sb.append(getContent(doc, id));
+
 		return sb.toString();
 	}
 
@@ -146,7 +156,7 @@ public class Content extends HttpServlet {
 		Element newDiv = transformDivElement(div, "div");
 		return tableEntry(newDiv.asXML(), page);
 	}
-	
+
 	private String tableEntry(String text, String page) {
 		if (page == null) {
 			page = "";
@@ -166,7 +176,7 @@ public class Content extends HttpServlet {
 	private String pageFmt = "<h1>%s</h1>\n<table>\n<tr><td>\n"
 			+ "<h2>%s</h2>\n</td><td>\n</td><td>\n<h2>(%s)</h2>\n"
 			+ "</td></tr>\n</table>\n<hr />\n";
-	
+
 	private String tableFmt = "<tr><td>%s</td><td><div class=\"page\">%s</div></td></tr>";
 
 	class IdComparator implements Comparator<Element> {
