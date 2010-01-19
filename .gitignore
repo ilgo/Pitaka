@@ -9,3 +9,5 @@ exist-libs*
 *.class
 */bin/*
 *~
+/pitaka-build/*
+
