@@ -46,16 +46,16 @@
             class="zen.ilgo.pitaka.browser.HtmlReader"
             default="false"
             icon="icons/book_open.png"
-            id="zen.ilgo.pitaka.core.HtmlReader"
-            name="HtmlReader">
+            id="zen.ilgo.pitaka.HtmlReader"
+            name="TextReader">
       </editor>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="zen.ilgo.pitaka.core.CallBrowser"
-            id="pitaka-core.callBrowser"
-            name="Call Browser">
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.OpenReaderHandler"
+            id="zen.ilgo.pitaka.collections.handlers.OpenReaders"
+            name="Open Readers">
       </command>
       <command
             defaultHandler="zen.ilgo.pitaka.collections.handlers.CreateCollectionHandler"
@@ -91,16 +91,65 @@
                commandId="zen.ilgo.pitaka.collections.createCollection"
                label="Create Collection"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <instanceof
+                           value="org.xmldb.api.base.Collection">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="zen.ilgo.pitaka.collections.CollectionFromDir"
                label="Collection from Directory"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <instanceof
+                           value="org.xmldb.api.base.Collection">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="zen.ilgo.pitaka.collections.deleteCollection"
                label="Delete Collection"
                style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <instanceof
+                           value="org.xmldb.api.base.Collection">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="pitaka-core.callBrowser"
+               label="Open Reader"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <instanceof
+                           value="org.xmldb.api.base.Resource">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="zen.ilgo.pitaka.collections.separator1"
@@ -110,11 +159,33 @@
                commandId="zen.ilgo.pitaka.collections.addResource"
                label="Add Resource"
                style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <instanceof
+                           value="org.xmldb.api.base.Collection">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="zen.ilgo.pitaka.collections.deleteResource"
                label="Delete Resource"
                style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <instanceof
+                           value="org.xmldb.api.base.Resource">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
