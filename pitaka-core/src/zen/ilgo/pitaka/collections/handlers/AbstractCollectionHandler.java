@@ -38,7 +38,7 @@ public class AbstractCollectionHandler extends AbstractHandler {
 	}
 	
 	protected ISelection getCollectionViewSelection(ExecutionEvent event) {
-		
+
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		IWorkbenchPage page = window.getActivePage();
 		CollectionsView view = (CollectionsView) page
