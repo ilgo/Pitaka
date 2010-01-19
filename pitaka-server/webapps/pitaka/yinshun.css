@@ -6,6 +6,7 @@
 h1 {
 	color : red;
 	font-size : 130%;
+	text-align : center;
 }
 
 /* Paragraphs
@@ -61,6 +62,9 @@ a[type="navi"] {
 	margin-left : 0.5em;
 	margin-right : 0.5em;
 	color : black;
+}
+table[type="navi"] {
+	text-align : center;
 }
 
 /* Image Tables
