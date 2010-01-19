@@ -28,13 +28,11 @@ public class CollectionsView extends ViewPart {
 
 		treeViewer = new TreeViewer(parent, SWT.BORDER | SWT.MULTI
 				| SWT.V_SCROLL);
-		getSite().setSelectionProvider(treeViewer);
 		treeViewer.setLabelProvider(new ExistTreeLabelProvider());
 		treeViewer.setContentProvider(new ExistTreeContentProvider());
 		treeViewer.addDoubleClickListener(new TreeClicker());
-
 		AbstractCollectionHandler.setTreeViewer(treeViewer);
-
+		getSite().setSelectionProvider(treeViewer);
 		Collection root = Session.getInstance().getRootCollection();
 		treeViewer.setInput(root);
 
