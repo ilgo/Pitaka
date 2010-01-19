@@ -3,6 +3,8 @@ package zen.ilgo.pitaka.collections;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,10 +106,11 @@ public class ExistTreeLabelProvider implements ILabelProvider {
 			} else if (element instanceof Resource) {
 				name = ((Resource) element).getId();
 			}
+			name = URLDecoder.decode(name, "UTF-8");
 		} catch (XMLDBException e) {
 			e.printStackTrace();
-		} finally {
-
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
 		return name;
 	}
