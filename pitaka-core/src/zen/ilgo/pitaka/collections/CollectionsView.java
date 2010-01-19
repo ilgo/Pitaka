@@ -61,11 +61,11 @@ public class CollectionsView extends ViewPart {
 				IHandlerService handlerService = (IHandlerService) getSite()
 						.getService(IHandlerService.class);
 				try {
-					handlerService.executeCommand("pitaka-core.callBrowser",
+					handlerService.executeCommand("zen.ilgo.pitaka.collections.handlers.OpenReaders",
 							null);
-				} catch (Exception ex) {
-					throw new RuntimeException(
-							"pitaka-core.callBrowser not found");
+
+				} catch (Exception ex) {					
+					ex.printStackTrace();
 				}
 			}
 
