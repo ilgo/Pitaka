@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Pitaka Core" uid="zen.ilgo.pitaka.product" id="zen.ilgo.pitaka.core.product" application="zen.ilgo.pitaka.core.application" version="1.0" useFeatures="false" includeLaunchers="false">
+<product name="Pitaka Core" uid="zen.ilgo.pitaka.product" application="zen.ilgo.pitaka.core.application" version="1.0" useFeatures="false" includeLaunchers="false">
 
    <configIni use="default">
    </configIni>
@@ -53,6 +53,7 @@
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="zen.ilgo.pitaka.core"/>
       <plugin id="zen.ilgo.pitaka.db"/>
+      <plugin id="zen.ilgo.pitaka.dict"/>
       <plugin id="zen.ilgo.pitaka.server"/>
    </plugins>
 
