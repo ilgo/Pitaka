@@ -35,7 +35,7 @@ import org.xmldb.api.modules.XPathQueryService;
 public class Session {
 
 	public static final String DB_URL = "xmldb:exist:///db";
-	public static final String LOCATION = "/home/ilgo/tmp/pitaka";
+	public static String LOCATION;
 
 	private final ClassLoader cl;
 	private static Session session;
@@ -46,8 +46,9 @@ public class Session {
 	private Session() {
 
 		cl = this.getClass().getClassLoader();
-		System.setProperty("exist.home", Session.LOCATION + "/db");
-		System.setProperty("exist.initdb", "true");
+		//System.setProperty("exist.home", Session.LOCATION + "/db");
+		//System.setProperty("exist.initdb", "true");
+		Session.LOCATION = System.getProperty("exist.home");
 		initDB();
 	}
 
