@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build pitaka" name="build the Pitaka project">
+
+	<property name="project.dir" location="${basedir}/../" />
+	<property name="exist.project.dir" location="${project.dir}/pitaka-db" />
+	<property name="jetty.project.dir" location="${project.dir}/pitaka-server" />
+	<property name="derby.project.dir" location="${project.dir}/pitaka-dict" />
+
+	<property name="servlet.classes" value="zen/ilgo/pitaka/servlet/" />
+
+	<property name="workspace.dir" location="/home/ilgo/workspace" />
+	<property name="pitaka.install.dir" location="${workspace.dir}/pitaka" />
+	<property name="exist.home" location="${pitaka.install.dir}/db" />
+	<property name="webapp.classes.dir" location="${pitaka.install.dir}/webapps/pitaka/WEB-INF/classes/zen/ilgo/pitaka/servlet" />
+
+
+	<target name="build pitaka" depends="clean, build-jetty, build-exist" />
+
+	<target name="clean">
+		<!-- clean out the root dir, then create basic structure -->
+		<delete dir="${workspace.dir}/repository" />
+		<delete dir="${pitaka.install.dir}" />
+		<mkdir dir="${pitaka.install.dir}/db/logs" />
+		<mkdir dir="${webapp.classes.dir}" />
+	</target>
+
+	<target name="build-jetty">
+		<!-- copy webapp structure and servlet classe, then 'war' it -->
+		<copy todir="${pitaka.install.dir}/webapps">
+			<fileset dir="${jetty.project.dir}/webapps" />
+		</copy>
+		<copy todir="${webapp.classes.dir}">
+			<fileset dir="${jetty.project.dir}/bin/zen/ilgo/pitaka/servlet" />
+		</copy>
+		<jar destfile="${pitaka.install.dir}/webapps/pitaka.war" basedir="${pitaka.install.dir}/webapps" />
+		<delete dir="${pitaka.install.dir}/webapps/pitaka" />
+	</target>
+
+	<target name="build-exist">
+		<!-- creates the conf.xml with proper xml attributes for exist.home -->
+		<java classname="zen.ilgo.pitaka.build.BuildExistStuff">
+			<sysproperty key="exist.home" value="${exist.home}" />
+			<sysproperty key="exist.project.dir" value="${exist.project.dir}" />
+			<classpath>
+				<pathelement location="bin" />
+				<fileset dir="${exist.project.dir}/libs">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+		
+		<!-- the data.tar.bz2 file is generated from Pitaka -create code -->
+		<copy file="${basedir}/resources/data.tar.bz2" todir="${exist.home}" />
+		<bunzip2 src="${exist.home}/data.tar.bz2" />
+		<untar src="${exist.home}/data.tar" dest="${exist.home}" />
+		<delete file="${exist.home}/data.tar" />
+		<delete file="${exist.home}/data.tar.bz2" />
+	</target>
+
+	<target name="build-derby">
+
+	</target>
+
+</project>
