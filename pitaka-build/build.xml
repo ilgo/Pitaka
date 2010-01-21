@@ -4,7 +4,7 @@
 	<property name="project.dir" location="${basedir}/../" />
 	<property name="exist.project.dir" location="${project.dir}/pitaka-db" />
 	<property name="jetty.project.dir" location="${project.dir}/pitaka-server" />
-	<property name="derby.project.dir" location="${project.dir}/pitaka-dict" />
+	<property name="dict.project.dir" location="${project.dir}/pitaka-dict" />
 
 	<property name="servlet.classes" value="zen/ilgo/pitaka/servlet/" />
 
@@ -14,7 +14,7 @@
 	<property name="webapp.classes.dir" location="${pitaka.install.dir}/webapps/pitaka/WEB-INF/classes/zen/ilgo/pitaka/servlet" />
 
 
-	<target name="build pitaka" depends="clean, build-jetty, build-exist" />
+	<target name="build pitaka" depends="test, clean, build-jetty, build-exist" />
 
 	<target name="clean">
 		<!-- clean out the root dir, then create basic structure -->
@@ -48,7 +48,7 @@
 				</fileset>
 			</classpath>
 		</java>
-		
+
 		<!-- the data.tar.bz2 file is generated from Pitaka -create code -->
 		<copy file="${basedir}/resources/data.tar.bz2" todir="${exist.home}" />
 		<bunzip2 src="${exist.home}/data.tar.bz2" />
@@ -60,5 +60,20 @@
 	<target name="build-derby">
 
 	</target>
+
+	<target name="test">
+		<junit>
+			<classpath>
+				<pathelement location="${dict.project.dir}/bin" />
+				<pathelement location="${dict.project.dir}/bin" />
+				<pathelement path="/usr/share/java/junit4.jar" />
+			</classpath>
+			<test name="zen.ilgo.pitaka.dict.DictTest">
+				<formatter type="xml" />
+			</test>
+		</junit>
+	</target>
+
+
 
 </project>
