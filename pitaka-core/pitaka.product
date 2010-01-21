@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Pitaka Core" uid="zen.ilgo.pitaka.product" application="zen.ilgo.pitaka.core.application" version="1.0" useFeatures="false" includeLaunchers="false">
+<product name="Pitaka Core" uid="zen.ilgo.pitaka.product" id="zen.ilgo.pitaka.core.product" application="zen.ilgo.pitaka.core.application" version="1.0" useFeatures="false" includeLaunchers="false">
 
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
       <programArgs>-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}</programArgs>
-      <vmArgs>-Xms128m -Xmx512m -Dorg.eclipse.equinox.p2.reconciler.dropins.directory=/usr/share/eclipse/dropins -Dexist.home=/home/ilgo/tmp/pitaka</vmArgs>
+      <vmArgs>-Xms128m -Xmx512m -Dorg.eclipse.equinox.p2.reconciler.dropins.directory=/usr/share/eclipse/dropins -Dexist.home=/home/ilgo/workspace/pitaka -Djetty.home=/home/ilgo/workspace/pitaka</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
