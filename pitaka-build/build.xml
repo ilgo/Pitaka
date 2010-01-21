@@ -32,7 +32,7 @@
 		<copy todir="${webapp.classes.dir}">
 			<fileset dir="${jetty.project.dir}/bin/zen/ilgo/pitaka/servlet" />
 		</copy>
-		<jar destfile="${pitaka.install.dir}/webapps/pitaka.war" basedir="${pitaka.install.dir}/webapps" />
+		<jar destfile="${pitaka.install.dir}/webapps/pitaka.war" basedir="${pitaka.install.dir}/webapps/pitaka" />
 		<delete dir="${pitaka.install.dir}/webapps/pitaka" />
 	</target>
 
