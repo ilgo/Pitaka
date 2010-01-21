@@ -115,7 +115,7 @@ public class Session {
 				collectionManagement.createCollection(Session.DB_URL
 						+ "/Texts/Pitaka");
 				collectionManagement.createCollection(Session.DB_URL
-						+ "/Users/ilgo");
+						+ "/Users");
 
 			} else {
 				initDBConnection();
@@ -194,6 +194,7 @@ public class Session {
 		path.delete();
 	}
 
+	@SuppressWarnings("unused")
 	private String readXml(String location) {
 
 		File file = new File(location);
