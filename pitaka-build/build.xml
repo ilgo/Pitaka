@@ -2,9 +2,10 @@
 <project default="build pitaka" name="build the Pitaka project">
 
 	<property name="project.dir" location="${basedir}/../" />
-	<property name="exist.project.dir" location="${project.dir}/pitaka-db" />
-	<property name="jetty.project.dir" location="${project.dir}/pitaka-server" />
+	<property name="xmldb.project.dir" location="${project.dir}/pitaka-db" />
+	<property name="server.project.dir" location="${project.dir}/pitaka-server" />
 	<property name="dict.project.dir" location="${project.dir}/pitaka-dict" />
+	<property name="core.project.dir" location="${project.dir}/pitaka-core" />
 
 	<property name="servlet.classes" value="zen/ilgo/pitaka/servlet/" />
 
@@ -13,37 +14,49 @@
 	<property name="exist.home" location="${pitaka.install.dir}/db" />
 	<property name="webapp.classes.dir" location="${pitaka.install.dir}/webapps/pitaka/WEB-INF/classes/zen/ilgo/pitaka/servlet" />
 
-
-	<target name="build pitaka" depends="test, clean, build-jetty, build-exist" />
+	<target name="build pitaka">
+		<antcall target="test" />
+		<antcall target="clean" />
+		<antcall target="build-server" />
+		<antcall target="build-xmldb" />
+		<antcall target="build-dict" />
+		<antcall target="build-core" />
+		<antcall target="move-jars" />
+	</target>
 
 	<target name="clean">
 		<!-- clean out the root dir, then create basic structure -->
 		<delete dir="${workspace.dir}/repository" />
-		<delete dir="${pitaka.install.dir}" />
+		<delete dir="${pitaka.install.dir}/webapps" />
+		<delete dir="${pitaka.install.dir}/db" />
 		<mkdir dir="${pitaka.install.dir}/db/logs" />
 		<mkdir dir="${webapp.classes.dir}" />
 	</target>
 
-	<target name="build-jetty">
+	<target name="build-server">
 		<!-- copy webapp structure and servlet classe, then 'war' it -->
 		<copy todir="${pitaka.install.dir}/webapps">
-			<fileset dir="${jetty.project.dir}/webapps" />
+			<fileset dir="${server.project.dir}/webapps" />
 		</copy>
 		<copy todir="${webapp.classes.dir}">
-			<fileset dir="${jetty.project.dir}/bin/zen/ilgo/pitaka/servlet" />
+			<fileset dir="${server.project.dir}/bin/zen/ilgo/pitaka/servlet" />
 		</copy>
 		<jar destfile="${pitaka.install.dir}/webapps/pitaka.war" basedir="${pitaka.install.dir}/webapps/pitaka" />
 		<delete dir="${pitaka.install.dir}/webapps/pitaka" />
+
+		<ant antfile="${server.project.dir}/build-server.xml" dir="${server.project.dir}" target="build.update.jar" />
+		<delete dir="${server.project.dir}/@dot" />
+		<delete file="${server.project.dir}/@dot.log" />
 	</target>
 
-	<target name="build-exist">
+	<target name="build-xmldb">
 		<!-- creates the conf.xml with proper xml attributes for exist.home -->
 		<java classname="zen.ilgo.pitaka.build.BuildExistStuff">
 			<sysproperty key="exist.home" value="${exist.home}" />
-			<sysproperty key="exist.project.dir" value="${exist.project.dir}" />
+			<sysproperty key="xmldb.project.dir" value="${xmldb.project.dir}" />
 			<classpath>
 				<pathelement location="bin" />
-				<fileset dir="${exist.project.dir}/libs">
+				<fileset dir="${xmldb.project.dir}/libs">
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
@@ -55,22 +68,40 @@
 		<untar src="${exist.home}/data.tar" dest="${exist.home}" />
 		<delete file="${exist.home}/data.tar" />
 		<delete file="${exist.home}/data.tar.bz2" />
+
+		<ant antfile="${xmldb.project.dir}/build-xmldb.xml" dir="${xmldb.project.dir}" target="build.update.jar" />
+		<delete dir="${xmldb.project.dir}/@dot" />
+		<delete file="${xmldb.project.dir}/@dot.log" />
 	</target>
 
-	<target name="build-derby">
-
+	<target name="build-dict">
+		<ant antfile="${dict.project.dir}/build-dict.xml" dir="${dict.project.dir}" target="build.update.jar" />
+		<delete dir="${dict.project.dir}/@dot" />
+		<delete file="${dict.project.dir}/@dot.log" />
 	</target>
+	
+	<target name="build-core">
+			<ant antfile="${core.project.dir}/build-core.xml" dir="${core.project.dir}" target="build.update.jar" />
+			<delete dir="${core.project.dir}/@dot" />
+			<delete file="${core.project.dir}/@dot.log" />
+		</target>
 
 	<target name="test">
-		<junit>
-			<formatter type="xml" />
+		<junit haltonfailure="yes">
 			<classpath>
 				<pathelement location="${basedir}/bin" />
 				<pathelement location="${dict.project.dir}/bin" />
 				<pathelement path="/usr/share/java/junit4.jar" />
 			</classpath>
-			<test name="zen.ilgo.pitaka.test.DictTest"/>
+			<test name="zen.ilgo.pitaka.test.DictTest" />
 		</junit>
+	</target>
+
+	<target name="move-jars">
+		<move file="${server.project.dir}/zen.ilgo.pitaka.server_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
+		<move file="${xmldb.project.dir}/zen.ilgo.pitaka.db_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
+		<move file="${dict.project.dir}/zen.ilgo.pitaka.dict_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
+		<move file="${core.project.dir}/zen.ilgo.pitaka.core_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
 	</target>
 
 </project>
