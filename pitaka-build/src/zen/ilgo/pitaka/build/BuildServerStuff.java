@@ -1,5 +1,5 @@
 package zen.ilgo.pitaka.build;
 
-public class BuildDerbyStuff {
+public class BuildServerStuff {
 
 }

@@ -14,12 +14,12 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-public class BuildExistStuff {
+public class BuildXmldbStuff {
 
 	public final String DB_URL;
 	public final String EXIST_HOME;
 
-	public BuildExistStuff() {
+	public BuildXmldbStuff() {
 
 		DB_URL = "xmldb:exist:///db";
 		EXIST_HOME = System.getProperty("exist.home");
@@ -33,7 +33,7 @@ public class BuildExistStuff {
 
 	private void copyConfXml() throws Exception {
 
-		String home = System.getProperty("exist.project.dir");
+		String home = System.getProperty("xmldb.project.dir");
 		InputStream conf = new FileInputStream(new File(home,
 				"resources/conf.xml"));
 		if (conf == null) {
@@ -60,7 +60,7 @@ public class BuildExistStuff {
 	}
 
 	public static void main(String[] args) {
-		new BuildExistStuff();
+		new BuildXmldbStuff();
 		System.exit(0);
 	}
 }
