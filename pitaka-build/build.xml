@@ -29,6 +29,7 @@
 		<delete dir="${workspace.dir}/repository" />
 		<delete dir="${pitaka.install.dir}/webapps" />
 		<delete dir="${pitaka.install.dir}/db" />
+		<delete dir="${pitaka.install.dir}/derby" />
 		<mkdir dir="${pitaka.install.dir}/db/logs" />
 		<mkdir dir="${webapp.classes.dir}" />
 	</target>
@@ -51,7 +52,7 @@
 
 	<target name="build-xmldb">
 		<!-- creates the conf.xml with proper xml attributes for exist.home -->
-		<java classname="zen.ilgo.pitaka.build.BuildExistStuff">
+		<java classname="zen.ilgo.pitaka.build.BuildXmldbStuff">
 			<sysproperty key="exist.home" value="${exist.home}" />
 			<sysproperty key="xmldb.project.dir" value="${xmldb.project.dir}" />
 			<classpath>
@@ -75,16 +76,27 @@
 	</target>
 
 	<target name="build-dict">
+		<!-- creates the derby DB : dicts -->
+		<java classname="zen.ilgo.pitaka.build.BuildDictStuff">
+			<sysproperty key="derby.dbname" value="${pitaka.install.dir}/derby/dicts" />
+			<sysproperty key="dict.project.dir" value="${dict.project.dir}" />
+			<classpath>
+				<pathelement location="bin" />
+				<fileset dir="${dict.project.dir}/libs">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</java>
 		<ant antfile="${dict.project.dir}/build-dict.xml" dir="${dict.project.dir}" target="build.update.jar" />
 		<delete dir="${dict.project.dir}/@dot" />
 		<delete file="${dict.project.dir}/@dot.log" />
 	</target>
-	
+
 	<target name="build-core">
-			<ant antfile="${core.project.dir}/build-core.xml" dir="${core.project.dir}" target="build.update.jar" />
-			<delete dir="${core.project.dir}/@dot" />
-			<delete file="${core.project.dir}/@dot.log" />
-		</target>
+		<ant antfile="${core.project.dir}/build-core.xml" dir="${core.project.dir}" target="build.update.jar" />
+		<delete dir="${core.project.dir}/@dot" />
+		<delete file="${core.project.dir}/@dot.log" />
+	</target>
 
 	<target name="test">
 		<junit haltonfailure="yes">
@@ -98,10 +110,10 @@
 	</target>
 
 	<target name="move-jars">
-		<move file="${server.project.dir}/zen.ilgo.pitaka.server_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
-		<move file="${xmldb.project.dir}/zen.ilgo.pitaka.db_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
-		<move file="${dict.project.dir}/zen.ilgo.pitaka.dict_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
-		<move file="${core.project.dir}/zen.ilgo.pitaka.core_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true"/>
+		<move file="${server.project.dir}/zen.ilgo.pitaka.server_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
+		<move file="${xmldb.project.dir}/zen.ilgo.pitaka.db_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
+		<move file="${dict.project.dir}/zen.ilgo.pitaka.dict_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
+		<move file="${core.project.dir}/zen.ilgo.pitaka.core_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
 	</target>
 
 </project>
