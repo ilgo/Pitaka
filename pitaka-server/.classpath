@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="libs/jsp-2.1-6.1.14.jar"/>
 	<classpathentry kind="lib" path="libs/jsp-api-2.1-6.1.14.jar"/>
 	<classpathentry kind="lib" path="libs/servlet-api-2.5-6.1.14.jar"/>
-	<classpathentry kind="lib" path="libs/tools.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pitaka-db"/>
 	<classpathentry kind="lib" path="/home/ilgo/Code/pitaka-ws/pitaka-db/libs/xmldb.jar"/>
 	<classpathentry kind="lib" path="/home/ilgo/Code/pitaka-ws/pitaka-db/libs/dom4j-1.6.1.jar"/>

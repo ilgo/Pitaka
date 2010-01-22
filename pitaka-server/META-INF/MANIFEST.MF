@@ -14,5 +14,4 @@ Bundle-ClassPath: libs/jetty-6.1.14.jar,
  libs/jsp-2.1-6.1.14.jar,
  libs/jsp-api-2.1-6.1.14.jar,
  libs/servlet-api-2.5-6.1.14.jar,
- libs/tools.jar,
  .
