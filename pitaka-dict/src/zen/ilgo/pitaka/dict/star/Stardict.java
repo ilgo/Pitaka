@@ -179,7 +179,7 @@ public class Stardict implements IDict {
 		for (String type : types) {
 			File file = new File(baseDir, bookName + type);
 			if (file.exists()) {
-				System.out.println("Found: " + file.getAbsolutePath());
+				//System.out.println("Found: " + file.getAbsolutePath());
 				return file;
 			}
 		}
