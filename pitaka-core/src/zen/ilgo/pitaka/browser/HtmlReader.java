@@ -3,6 +3,7 @@ package zen.ilgo.pitaka.browser;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -52,6 +53,28 @@ public class HtmlReader extends EditorPart {
 
 		browser = new Browser(parent, SWT.MOZILLA);
 		browser.setUrl(url);
+		browser.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseDown(org.eclipse.swt.events.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("UP");
+			}
+
+		
+	});
 	}
 
 	@Override
@@ -63,5 +86,4 @@ public class HtmlReader extends EditorPart {
 		browser.setUrl(url);
 		browser.refresh();
 	}
-
 }
