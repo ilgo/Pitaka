@@ -73,7 +73,7 @@ public class BuildDictStuff {
 			+ "	author VARCHAR(256) )";
 
 	private final String createDefsTable = "CREATE TABLE defs ( "
-			+ "	id INT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
+			+ "	id INT NOT NULL PRIMARY KEY,"
 			+ "	dictid INT NOT NULL, " 
 			+ "	def CLOB(128 K) NOT NULL,"
 			+ " md5 CHAR(32) NOT NULL, "
