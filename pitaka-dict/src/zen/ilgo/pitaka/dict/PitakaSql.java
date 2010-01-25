@@ -64,21 +64,21 @@ public class PitakaSql {
 		return generateAddWordsSql(n);
 	}
 
-	public static String getLastDefsStmt(int dictKey, List<String> lastDefs,
-			List<String> lastHash) {
+	public static String getLastDefsStmt(int defId, int dictKey,
+			List<String> lastDefs, List<String> lastHash) {
 
-		String fmt = "(%d, '%s', '%s')";
+		int id = defId;
+		String fmt = "(%d, %d, '%s', '%s')";
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO defs (dictid, def, md5) VALUES \n");
+		sb.append("INSERT INTO defs (id, dictid, def, md5) VALUES \n");
 		for (int n = 0; n < lastDefs.size() - 1; n++) {
-			sb.append(String.format(fmt, dictKey, lastDefs.get(n), lastHash
-					.get(n)));
+			sb.append(String.format(fmt, id++, dictKey, lastDefs.get(n),
+					lastHash.get(n)));
 			sb.append(",\n");
 		}
 		int n = lastDefs.size() - 1;
-		sb
-				.append(String.format(fmt, dictKey, lastDefs.get(n), lastHash
-						.get(n)));
+		sb.append(String.format(fmt, id, dictKey, lastDefs.get(n), lastHash
+				.get(n)));
 		return sb.toString();
 	}
 
@@ -156,11 +156,11 @@ public class PitakaSql {
 
 	private static String generateAddDefsSql(int n) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO defs (dictid, def, md5) VALUES \n");
-		for (int row = 0; row < n -1; row++) {
-			sb.append("(?, ?, ?),\n");
+		sb.append("INSERT INTO defs (id, dictid, def, md5) VALUES \n");
+		for (int row = 0; row < n - 1; row++) {
+			sb.append("(?, ?, ?, ?),\n");
 		}
-		sb.append("(?, ?, ?)");
+		sb.append("(?, ?, ?, ?)");
 		return sb.toString();
 	}
 
@@ -168,7 +168,7 @@ public class PitakaSql {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO words (defid, word) VALUES \n");
-		for (int row = 0; row < n -1; row++) {
+		for (int row = 0; row < n - 1; row++) {
 			sb.append("(?, ?),\n");
 		}
 		sb.append("(?, ?)");

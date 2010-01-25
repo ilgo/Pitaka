@@ -145,10 +145,14 @@ public class DictManagement {
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 
 		int loopCount = dict.getEntryCount() / PitakaSql.DEFAULT_STMT_SIZE;
-		int k = 1;
-		int j = 2;
-		
-		Object[] sql = new Object[210];
+		int defIndex = 1;
+		int wordIndex = 1;
+
+		ResultSet rs = countStmt.executeQuery();
+		rs.next();
+		int defCount = rs.getInt(1);
+		defCount++;
+		rs.close();
 
 		for (int n = 0; n < loopCount; n++) {
 			
@@ -156,36 +160,20 @@ public class DictManagement {
 				dict.hasNext();
 				IDictEntry entry = dict.next();
 
-				wordStmt.setString(j, entry.getWord());
-				
-				sql[j] = entry.getWord();
-				
-				j += 2;
+				wordStmt.setInt(wordIndex++, defCount);
+				wordStmt.setString(wordIndex++, entry.getWord());
 
 				String def = entry.getDefinition();
 				byte[] bytes = md5.digest(def.getBytes());
 				String hash = byteToHex(bytes);
 				md5.reset();
 
-				defsStmt.setInt(k++, dictKey);
-				defsStmt.setString(k++, def);
-				defsStmt.setString(k++, hash);
+				defsStmt.setInt(defIndex++, defCount++);
+				defsStmt.setInt(defIndex++, dictKey);
+				defsStmt.setString(defIndex++, def);
+				defsStmt.setString(defIndex++, hash);
 			}
 			defsStmt.executeUpdate();
-
-			ResultSet rs = countStmt.executeQuery();
-			rs.next();
-			int defId = rs.getInt(1) - PitakaSql.DEFAULT_STMT_SIZE;
-			rs.close();
-			
-			j = 1;
-			for (int m = 0; m < PitakaSql.DEFAULT_STMT_SIZE; m++) {
-				wordStmt.setInt(j, ++defId);
-				
-				sql[j] = defId;
-				
-				j += 2;
-			}
 			wordStmt.executeUpdate();
 		}
 
@@ -198,30 +186,27 @@ public class DictManagement {
 				PitakaSql.DEFAULT_STMT_SIZE);
 		List<String> lastHash = new ArrayList<String>(
 				PitakaSql.DEFAULT_STMT_SIZE);
+		
 		while (dict.hasNext()) {
-			IDictEntry entry = dict.next();
-			lastWord.add(entry.getWord());
-
+			IDictEntry entry = dict.next();			
 			String def = entry.getDefinition();
+			
 			byte[] bytes = md5.digest(def.getBytes());
 			String hash = byteToHex(bytes);
 			md5.reset();
 
+			lastWord.add(entry.getWord());
 			lastDefs.add(def);
 			lastHash.add(hash);
 		}
 		
-		String lastDefsStmt = PitakaSql.getLastDefsStmt(dictKey, lastDefs,
-				lastHash);
 		Statement stmt = conn.createStatement();
-		stmt.executeUpdate(lastDefsStmt);	
 		
-		ResultSet rs = countStmt.executeQuery();
-		rs.next();
-		int defId = rs.getInt(1) - lastDefs.size() + 1;
-		rs.close();
-
-		String lastWordStmt = PitakaSql.getLastWordStmt(lastWord, defId);
+		String lastDefsStmt = PitakaSql.getLastDefsStmt(defCount, dictKey, lastDefs,
+				lastHash);		
+		String lastWordStmt = PitakaSql.getLastWordStmt(lastWord, defCount);
+		
+		stmt.executeUpdate(lastDefsStmt);		
 		stmt.executeUpdate(lastWordStmt);
 	}
 
