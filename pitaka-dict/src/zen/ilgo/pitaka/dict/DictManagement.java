@@ -138,16 +138,14 @@ public class DictManagement {
 	private void importDictContent(IDict dict, int dictKey)
 			throws NoSuchAlgorithmException, SQLException {
 
-		PreparedStatement defsStmt = PitakaSql.getAdd100DefsStmt();
-		PreparedStatement wordStmt = PitakaSql.getAdd100WordsStmt();
+		PreparedStatement defsStmt;
+		PreparedStatement wordStmt;
 		PreparedStatement countStmt = PitakaSql.getCountDefsStmt();
 
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 
 		int loopCount = dict.getEntryCount() / PitakaSql.DEFAULT_STMT_SIZE;
-		int defIndex = 1;
-		int wordIndex = 1;
-
+		
 		ResultSet rs = countStmt.executeQuery();
 		rs.next();
 		int defCount = rs.getInt(1);
@@ -155,6 +153,12 @@ public class DictManagement {
 		rs.close();
 
 		for (int n = 0; n < loopCount; n++) {
+			
+			int defIndex = 1;
+			int wordIndex = 1;
+			
+			defsStmt = PitakaSql.getAdd100DefsStmt();
+			wordStmt = PitakaSql.getAdd100WordsStmt();
 			
 			for (int m = 0; m < PitakaSql.DEFAULT_STMT_SIZE; m++) {
 				dict.hasNext();
