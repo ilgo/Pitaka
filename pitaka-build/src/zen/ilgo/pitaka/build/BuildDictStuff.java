@@ -1,9 +1,5 @@
 package zen.ilgo.pitaka.build;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,7 +17,7 @@ public class BuildDictStuff {
 	public BuildDictStuff() {
 		try {
 			initDerby();
-			loadTables();			
+			loadTables();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,17 +37,13 @@ public class BuildDictStuff {
 		System.out.println("Connected to database " + dbName);
 	}
 
-	private void loadTables() throws IOException, SQLException {
-		
-		String dict_project = System.getProperty("dict.project.dir");
-		File[] sqlFiles = new File(dict_project, "resources/createDictTables").listFiles();
-		for (File sqlFile : sqlFiles) {
-			byte[] bytes = new byte[(int)sqlFile.length()];
-			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(sqlFile));
-			bis.read(bytes);
-			String sql = new String(bytes);
+	private void loadTables() throws SQLException {
+
+		String[] createStatements = { createMetaTable, createDefsTable,
+				createWordTable };
+		for (String sql : createStatements) {
 			s.execute(sql);
-			System.out.println("Created Table: " + sqlFile.getName());
+			System.out.println("Created Table: " + sql);
 		}
 	}
 
@@ -72,9 +64,33 @@ public class BuildDictStuff {
 				System.out.println("Database shut down normally");
 			}
 		}
-
 	}
 
+	private final String createMetaTable = "CREATE TABLE meta ( "
+			+ "	id INT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
+			+ "	size INT NOT NULL," 
+			+ "	name VARCHAR(256) NOT NULL,"
+			+ "	author VARCHAR(256) )";
+
+	private final String createDefsTable = "CREATE TABLE defs ( "
+			+ "	id INT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
+			+ "	dictid INT NOT NULL, " 
+			+ "	def CLOB(128 K) NOT NULL,"
+			+ " md5 CHAR(32) NOT NULL, "
+			+ " CONSTRAINT dict_fk FOREIGN KEY (dictid)"
+			+ " REFERENCES meta ( id ) ON DELETE CASCADE ON UPDATE RESTRICT )";
+
+	private final String createWordTable = "CREATE TABLE words ( "
+			+ " defid INT NOT NULL, "
+			+ " word VARCHAR(512) NOT NULL, "
+			+ " PRIMARY KEY (defid, word), "
+			+ " CONSTRAINT defs_fk FOREIGN KEY (defid)"
+			+ " REFERENCES defs ( id ) ON DELETE CASCADE ON UPDATE RESTRICT )";			
+
+	/**
+	 * needed for the ant build script.
+	 * @param args no-args are passed
+	 */
 	public static void main(String[] args) {
 		new BuildDictStuff();
 		System.exit(0);
