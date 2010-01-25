@@ -50,5 +50,4 @@ public class DictTest {
 		instance.dispose();
 		assertTrue(counter == instance.getEntryCount());
 	}
-
 }

@@ -15,13 +15,14 @@
 	<property name="webapp.classes.dir" location="${pitaka.install.dir}/webapps/pitaka/WEB-INF/classes/zen/ilgo/pitaka/servlet" />
 
 	<target name="build pitaka">
-		<antcall target="test" />
 		<antcall target="clean" />
 		<antcall target="build-server" />
 		<antcall target="build-xmldb" />
 		<antcall target="build-dict" />
 		<antcall target="build-core" />
 		<antcall target="move-jars" />
+
+		<antcall target="test" />
 	</target>
 
 	<target name="clean">
@@ -98,22 +99,25 @@
 		<delete file="${core.project.dir}/@dot.log" />
 	</target>
 
-	<target name="test">
-		<junit haltonfailure="yes">
-			<classpath>
-				<pathelement location="${basedir}/bin" />
-				<pathelement location="${dict.project.dir}/bin" />
-				<pathelement path="/usr/share/java/junit4.jar" />
-			</classpath>
-			<test name="zen.ilgo.pitaka.test.DictTest" />
-		</junit>
-	</target>
-
 	<target name="move-jars">
 		<move file="${server.project.dir}/zen.ilgo.pitaka.server_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
 		<move file="${xmldb.project.dir}/zen.ilgo.pitaka.db_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
 		<move file="${dict.project.dir}/zen.ilgo.pitaka.dict_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
 		<move file="${core.project.dir}/zen.ilgo.pitaka.core_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
+	</target>
+
+	<target name="test">
+		<junit haltonfailure="no">
+			<classpath>
+				<pathelement location="${basedir}/bin" />
+				<pathelement location="${dict.project.dir}/bin" />
+				<pathelement path="${dict.project.dir}/libs/derby.jar" />
+				<pathelement path="/usr/share/java/junit4.jar" />				
+			</classpath>
+			<formatter type="plain" />
+			<test name="zen.ilgo.pitaka.test.DictTest" />
+			<test name="zen.ilgo.pitaka.test.DictManagementTest" />
+		</junit>
 	</target>
 
 </project>
