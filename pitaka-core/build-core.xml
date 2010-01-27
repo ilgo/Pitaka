@@ -147,6 +147,8 @@
 			<pathelement path="../pitaka-db/libs/xmlrpc-common-3.1.2.jar"/>
 			<pathelement path="../pitaka-db/bin/"/>
 			<pathelement path="../pitaka-db/@dot"/>
+			<pathelement path="../pitaka-dict/bin"/>
+			<pathelement path="../pitaka-dict/libs/derby.jar"/>
 		</path>
 		<!-- compile the source code -->
 		<javac destdir="${build.result.folder}/@dot" failonerror="${javacFailOnError}" verbose="${javacVerbose}" debug="${javacDebugInfo}" includeAntRuntime="no" bootclasspath="${bundleBootClasspath}" source="${bundleJavacSource}" target="${bundleJavacTarget}"		>

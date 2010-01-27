@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/pitaka-server"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/pitaka-db"/>
 	<classpathentry kind="lib" path="/home/ilgo/Code/pitaka-ws/pitaka-db/libs/xmldb.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/pitaka-dict"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -38,6 +38,7 @@
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="zen.ilgo.pitaka.core"/>
       <plugin id="zen.ilgo.pitaka.db"/>
+      <plugin id="zen.ilgo.pitaka.dict"/>
       <plugin id="zen.ilgo.pitaka.server"/>
    </plugins>
 

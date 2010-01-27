@@ -22,7 +22,7 @@
 		<antcall target="build-core" />
 		<antcall target="move-jars" />
 
-		<antcall target="test" />
+		<!--<antcall target="test" />-->
 	</target>
 
 	<target name="clean">
