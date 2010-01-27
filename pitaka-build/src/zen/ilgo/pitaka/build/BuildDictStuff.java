@@ -68,13 +68,13 @@ public class BuildDictStuff {
 
 	private final String createMetaTable = "CREATE TABLE meta ( "
 			+ "	id INT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
-			+ "	size INT NOT NULL," 
+			+ "	size INT NOT NULL,"
 			+ "	name VARCHAR(256) NOT NULL,"
 			+ "	author VARCHAR(256) )";
 
 	private final String createDefsTable = "CREATE TABLE defs ( "
 			+ "	id INT NOT NULL PRIMARY KEY,"
-			+ "	dictid INT NOT NULL, " 
+			+ "	dictid INT NOT NULL, "
 			+ "	def CLOB(128 K) NOT NULL,"
 			+ " md5 CHAR(32) NOT NULL, "
 			+ " CONSTRAINT dict_fk FOREIGN KEY (dictid)"
@@ -82,14 +82,16 @@ public class BuildDictStuff {
 
 	private final String createWordTable = "CREATE TABLE words ( "
 			+ " defid INT NOT NULL, "
-			+ " word VARCHAR(512) NOT NULL, "
-			+ " PRIMARY KEY (defid, word), "
+			+ " word VARCHAR(256) NOT NULL, "
+			+ " PRIMARY KEY (word, defid), "
 			+ " CONSTRAINT defs_fk FOREIGN KEY (defid)"
-			+ " REFERENCES defs ( id ) ON DELETE CASCADE ON UPDATE RESTRICT )";			
+			+ " REFERENCES defs ( id ) ON DELETE CASCADE ON UPDATE RESTRICT )";
 
 	/**
 	 * needed for the ant build script.
-	 * @param args no-args are passed
+	 * 
+	 * @param args
+	 *            no-args are passed
 	 */
 	public static void main(String[] args) {
 		new BuildDictStuff();
