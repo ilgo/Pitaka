@@ -35,6 +35,7 @@
          point="org.eclipse.ui.views">
       <view
             class="zen.ilgo.pitaka.collections.CollectionsView"
+            icon="icons/house.png"
             id="zen.ilgo.pitaka.core.collections"
             name="CollectionsView"
             restorable="true">
@@ -187,6 +188,12 @@
                </with>
             </visibleWhen>
          </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="label">
+         </menu>
       </menuContribution>
    </extension>
 

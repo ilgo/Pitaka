@@ -4,35 +4,35 @@
 
    <extension
          point="org.eclipse.ui.views">
-      <category
-            name="Dictionary Category"
-            id="zen.ilgo.pitaka.dict">
-      </category>
       <view
-            name="Dictionary View"
-            icon="icons/sample.gif"
-            category="zen.ilgo.pitaka.dict"
             class="zen.ilgo.pitaka.dict.DictView"
-            id="zen.ilgo.pitaka.dict.DictView">
+            icon="icons/report.png"
+            id="zen.ilgo.pitaka.dict.DictView"
+            name="DictView"
+            restorable="true">
       </view>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <view
-               ratio="0.5"
-               relative="org.eclipse.ui.views.TaskList"
-               relationship="right"
-               id="zen.ilgo.pitaka.dict.DictView">
-         </view>
-      </perspectiveExtension>
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="zen.ilgo.pitaka.dict.preferences.SamplePreferencePage"
+            id="zen.ilgo.pitaka.dict.preferences.SamplePreferencePage"
+            name="Sample Preferences">
+      </page>
    </extension>
    <extension
-         point="org.eclipse.help.contexts">
-      <contexts
-            file="contexts.xml">
-      </contexts>
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="zen.ilgo.pitaka.dict.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="workbenchpreferencepage.WorkbenchPreferencePage2"
+            id="pitaka-dict.page2"
+            name="name">
+      </page>
    </extension>
 
 </plugin>
