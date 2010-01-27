@@ -20,6 +20,7 @@ public class PitakaSql {
 	private static PreparedStatement add100WordsStmt = null;
 	private static PreparedStatement removeDictStmt = null;
 	private static PreparedStatement countDefsStmt = null;
+	private static PreparedStatement wordDefStmt = null;
 
 	public static PreparedStatement getAddDictMetaStmt() {
 		if (addDictMetaStmt == null) {
@@ -54,6 +55,13 @@ public class PitakaSql {
 			generateCountDefsStmt();
 		}
 		return countDefsStmt;
+	}
+
+	public static PreparedStatement getWordDefStmt() {
+		if (wordDefStmt == null) {
+			generateWordDefStmt();
+		}
+		return wordDefStmt;
 	}
 
 	public static String getAddDefsSql(int n) {
@@ -153,6 +161,17 @@ public class PitakaSql {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void generateWordDefStmt() {
+		
+		String sql = "SELECT def FROM defs JOIN words ON defid = id WHERE word = ?"; 
+		try {
+			wordDefStmt = conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private static String generateAddDefsSql(int n) {
 		StringBuilder sb = new StringBuilder();
@@ -174,5 +193,4 @@ public class PitakaSql {
 		sb.append("(?, ?)");
 		return sb.toString();
 	}
-
 }
