@@ -1,4 +1,4 @@
-package zen.ilgo.pitaka.db;
+package zen.ilgo.pitaka.test;
 
 
 public class TestDB {

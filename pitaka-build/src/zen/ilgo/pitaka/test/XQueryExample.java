@@ -1,4 +1,4 @@
-package zen.ilgo.pitaka.db;
+package zen.ilgo.pitaka.test;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
