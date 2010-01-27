@@ -30,6 +30,7 @@ public class DictManagement {
 		try {
 			initDerby();
 		} catch (Exception e) {
+			
 			throw new RuntimeException("Error initializing Derby-DB: "
 					+ e.getMessage());
 		}
