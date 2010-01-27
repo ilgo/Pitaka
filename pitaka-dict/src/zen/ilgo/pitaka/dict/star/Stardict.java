@@ -107,8 +107,8 @@ public class Stardict implements IDict {
 			wordBuffer[i++] = b;
 			b = index.readByte();
 		}
-		wordBuffer[i++] = b;
-		return new String(wordBuffer);
+		//wordBuffer[i++] = b;
+		return new String(wordBuffer).trim();
 	}
 
 	private String nextDefinition() {
