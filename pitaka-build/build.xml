@@ -100,10 +100,10 @@
 	</target>
 
 	<target name="move-jars">
-		<move file="${server.project.dir}/zen.ilgo.pitaka.server_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
-		<move file="${xmldb.project.dir}/zen.ilgo.pitaka.db_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
-		<move file="${dict.project.dir}/zen.ilgo.pitaka.dict_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
-		<move file="${core.project.dir}/zen.ilgo.pitaka.core_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" />
+		<move file="${server.project.dir}/zen.ilgo.pitaka.server_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" failonerror="false"/>
+		<move file="${xmldb.project.dir}/zen.ilgo.pitaka.db_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" failonerror="false"/>
+		<move file="${dict.project.dir}/zen.ilgo.pitaka.dict_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" failonerror="false"/>
+		<move file="${core.project.dir}/zen.ilgo.pitaka.core_1.0.0.jar" todir="${pitaka.install.dir}/plugins" overwrite="true" failonerror="false"/>
 	</target>
 
 	<target name="test">
