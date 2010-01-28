@@ -12,33 +12,30 @@ import org.mortbay.xml.XmlConfiguration;
 
 import zen.ilgo.pitaka.servlet.Content;
 
-public class JettyServer implements Runnable {
+public class JettyServer {
 
 	public static final String SERVER = "http://localhost:8080/pitaka";
 	private static String id = Content.class.toString();
 	private static ILog log = Activator.getDefault().getLog();
-	private IStatus status;
-	private Server server;
+	private static Server server;
 
-	@Override
-	public void run() {
+	private static JettyServer jetty;
 
-		try {
-			server = new Server();
-			InputStream config = getResource("resources/jetty.xml");
-			XmlConfiguration configuration = new XmlConfiguration(config);
-			configuration.configure(server);
-			server.start();
-		} catch (Exception e) {
-			status = new Status(IStatus.ERROR, id, "JettyServer start: "
-					+ e.getMessage(), e);
-			log.log(status);
-		} 
+	private JettyServer() {
+		server = new Server();
 	}
 
-	private InputStream getResource(String resource) throws FileNotFoundException {
+	public static JettyServer getInstance() {
+		if (jetty == null) {
+			jetty = new JettyServer();
+		}
+		return jetty;
+	}
 
-		ClassLoader cl = this.getClass().getClassLoader();
+	private static InputStream getResource(String resource)
+			throws FileNotFoundException {
+
+		ClassLoader cl = JettyServer.class.getClassLoader();
 		InputStream is = cl.getResourceAsStream(resource);
 		if (is == null) {
 			is = ClassLoader.getSystemResourceAsStream(resource);
@@ -49,14 +46,35 @@ public class JettyServer implements Runnable {
 		return is;
 	}
 
-	public void stop() {
+	public void start() {
+
+		IStatus status = null;
 		try {
-			server.stop();
+			InputStream config = getResource("resources/jetty.xml");
+			XmlConfiguration configuration = new XmlConfiguration(config);
+			configuration.configure(server);
+			server.start();
+			status = new Status(IStatus.INFO, id, "JettyServer started.");
 		} catch (Exception e) {
-			status = new Status(IStatus.ERROR, id, "JettyServer stop: "
+			status = new Status(IStatus.ERROR, id, "JettyServer start: "
 					+ e.getMessage(), e);
+		} finally {
 			log.log(status);
-		} 
+		}
 	}
 
+	public void stop() {
+		
+		IStatus status = null;
+		try {
+			server.stop();
+			//server = null;
+			status = new Status(IStatus.INFO, id, "JettyServer stopped.");
+		} catch (Exception e) {
+			status = new Status(IStatus.ERROR, id, "JettyServer stop: "
+					+ e.getMessage(), e);			
+		} finally {
+			log.log(status);
+		}		
+	}
 }
