@@ -17,6 +17,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+import zen.ilgo.pitaka.dict.DictView;
 import zen.ilgo.pitaka.dict.PitakaSql;
 
 public class HtmlReader extends EditorPart {
@@ -91,10 +92,14 @@ public class HtmlReader extends EditorPart {
 							
 							String def = rs.getString(1);
 							rs.close();
-							System.out.println(def);
+							
+							DictView.setText(def);
+							//System.out.println(def);
 						} catch (SQLException e) {
+							
+							DictView.setText("Not Found");
 							// TODO Auto-generated catch block
-							System.out.println("Not found");
+							//System.out.println("Not found");
 						}
 					}
 				}
