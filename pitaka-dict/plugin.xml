@@ -6,9 +6,9 @@
          point="org.eclipse.ui.views">
       <view
             class="zen.ilgo.pitaka.dict.DictView"
-            icon="icons/report.png"
+            icon="icons/dict.png"
             id="zen.ilgo.pitaka.dict.DictView"
-            name="DictView"
+            name="Dict Definitions"
             restorable="true">
       </view>
    </extension>
@@ -33,6 +33,54 @@
             id="pitaka-dict.page2"
             name="name">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?before=pitaka.main.menu.prefs">
+         <menu
+               icon="icons/dict.png"
+               id="pitaka.main.menu.dict"
+               label="Dict">
+            <command
+                  commandId="pitaka.dict.AddDictHandler"
+                  label="Add Dictionary"
+                  style="push">
+            </command>
+            <command
+                  commandId="pitaka.dict.DeleteDictHandler"
+                  label="Delete Dict"
+                  style="push">
+            </command>
+            <separator
+                  name="dict.menu.separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="pitaka.dict.ShowDictViewHandler"
+                  label="Show Dict View"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="zen.ilgo.pitaka.dict.commands.AddDictHandler"
+            id="pitaka.dict.AddDictHandler"
+            name="AddDict">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.dict.commands.DeleteDictHandler"
+            id="pitaka.dict.DeleteDictHandler"
+            name="DelDict">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.dict.commands.ShowDictViewHandler"
+            id="pitaka.dict.ShowDictViewHandler"
+            name="Show Dict View">
+      </command>
    </extension>
 
 </plugin>

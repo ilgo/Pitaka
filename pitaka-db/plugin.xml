@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?before=pitaka.main.menu.dict">
+         <menu
+               id="pitaka.main.menu.texts"
+               label="Texts">
+            <command
+                  commandId="pitaka.db.CollectionInfoHandler"
+                  label="Collection Info"
+                  style="push">
+            </command>
+            <command
+                  commandId="pitaka.db.TextInfoHandler"
+                  label="Text Info"
+                  style="push">
+            </command>
+            <separator
+                  name="db.menu.separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="pitaka.db.ShowCollectionViewHandler"
+                  label="Show Collection View"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="zen.ilgo.pitaka.db.handlers.CollectionInfoHandler"
+            id="pitaka.db.CollectionInfoHandler"
+            name="Collection Info">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.db.handlers.TextInfoHandler"
+            id="pitaka.db.TextInfoHandler"
+            name="Text Info">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.db.handlers.ShowCollectionViewHandler"
+            id="pitaka.db.ShowCollectionViewHandler"
+            name="Show Collection View">
+      </command>
+   </extension>
+
+</plugin>
