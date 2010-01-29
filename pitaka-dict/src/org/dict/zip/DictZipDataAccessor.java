@@ -9,12 +9,14 @@ public class DictZipDataAccessor implements org.dict.zip.IDataAccessor {
 	private RandomAccessInputStream in = null;
 	private DictZipInputStream din = null;
 
-	public DictZipDataAccessor(File file) throws IOException {
+	public DictZipDataAccessor(File file) throws IOException, DictzipException {
 
 		in = new RandomAccessInputStream(file, "r");
 		if (file.getName().endsWith(".dz")) {
-			din = new DictZipInputStream(in);
-			header = din.readHeader();
+
+			throw new DictzipException(file.getName() + ": Decompress with dictzip tool");
+			// din = new DictZipInputStream(in);
+			// header = din.readHeader();
 		}
 	}
 
@@ -30,10 +32,11 @@ public class DictZipDataAccessor implements org.dict.zip.IDataAccessor {
 				in.seek(pos);
 				bytes = new byte[off + len];
 				din.readFully(bytes);
+
 			} else {
 				in.seek(start);
-				 bytes = new byte[len];
-				 in.readFully(bytes);
+				bytes = new byte[len];
+				in.readFully(bytes);
 			}
 
 		} catch (java.io.IOException e) {

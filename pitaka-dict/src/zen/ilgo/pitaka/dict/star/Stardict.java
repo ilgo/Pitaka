@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 
 import org.dict.zip.DictZipDataAccessor;
+import org.dict.zip.DictzipException;
 import org.dict.zip.IDataAccessor;
 
 import zen.ilgo.pitaka.dict.IDict;
@@ -23,6 +24,7 @@ public class Stardict implements IDict {
 	private final IDataAccessor dict;
 	private final IDictEntry entry;
 	private final String bookName;
+	private final String baseName;
 
 	/**
 	 * the constructor. will load the dict and idx files, by getting the base
@@ -31,16 +33,19 @@ public class Stardict implements IDict {
 	 * @param ifoFile
 	 *            the stardict's ifo file
 	 * @throws IOException
+	 * @throws DictzipException 
 	 */
-	public Stardict(File ifoFile) throws IOException {
+	public Stardict(File ifoFile) throws IOException, DictzipException {
 
 		ifo = loadIfoProperties(ifoFile);
-
-		File baseDir = ifoFile.getParentFile();
 		bookName = ifo.getProperty("bookname");
-
-		index = loadIndexFile(baseDir);
-		dict = loadDictFile(baseDir);
+		
+		//File baseDir = ifoFile.getParentFile();
+		
+		String ifoPath = ifoFile.getAbsolutePath();
+		baseName = ifoPath.substring(0, ifoPath.length() - 4);
+		index = loadIndexFile();
+		dict = loadDictFile();
 
 		entry = new StarEntry();
 	}
@@ -146,13 +151,13 @@ public class Stardict implements IDict {
 		return ifoProp;
 	}
 
-	private DataInputStream loadIndexFile(File baseDir) throws IOException {
+	private DataInputStream loadIndexFile() throws IOException {
 
 		String[] types = { ".idx", ".idx.gz" };
-		File indexFile = findExistingFile(baseDir, types);
+		File indexFile = findExistingFile(types);
 		if (indexFile == null) {
 			throw new FileNotFoundException("No index for " + bookName
-					+ "found.");
+					+ " found.");
 		}
 
 		InputStream fis = new FileInputStream(indexFile);
@@ -163,21 +168,21 @@ public class Stardict implements IDict {
 
 	}
 
-	private IDataAccessor loadDictFile(File baseDir) throws IOException {
+	private IDataAccessor loadDictFile() throws IOException, DictzipException {
 
 		String[] types = { ".dict", ".dict.dz" };
-		File dictFile = findExistingFile(baseDir, types);
+		File dictFile = findExistingFile(types);
 		if (dictFile == null) {
 			throw new FileNotFoundException("No dict for " + bookName
-					+ "found.");
+					+ " found.");
 		}
 		return new DictZipDataAccessor(dictFile);
 	}
 
-	private File findExistingFile(File baseDir, String[] types) {
+	private File findExistingFile(String[] types) {
 
 		for (String type : types) {
-			File file = new File(baseDir, bookName + type);
+			File file = new File(baseName + type);
 			if (file.exists()) {
 				//System.out.println("Found: " + file.getAbsolutePath());
 				return file;
@@ -208,7 +213,7 @@ public class Stardict implements IDict {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, DictzipException {
 		File ifo = new File("/home/ilgo/.stardict/dic/Bulkwang.ifo");
 		IDict instance = new Stardict(ifo);
 		IDictEntry entry;
