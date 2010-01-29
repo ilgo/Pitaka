@@ -30,7 +30,7 @@ public class DictManagement {
 		try {
 			initDerby();
 		} catch (Exception e) {
-			
+
 			throw new RuntimeException("Error initializing Derby-DB: "
 					+ e.getMessage());
 		}
@@ -79,18 +79,20 @@ public class DictManagement {
 		return conn;
 	}
 
-	public void importDict(IDict dict) {
+	public int importDict(IDict dict) {
 
+		int dictKey = 0;
 		try {
-			int dictKey = importDictInfo(dict);
-			importDictContent(dict, dictKey);
+			dictKey = importDictInfo(dict);
+			if (dictKey >= 0) {
+				importDictContent(dict, dictKey);
+			}		
 		} catch (SQLException e) {
-
-			// TODO: remove the dict
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
+		return dictKey;
 	}
 
 	public void removeDict(String name) {
@@ -112,17 +114,35 @@ public class DictManagement {
 	 */
 	private int importDictInfo(IDict dict) throws SQLException {
 
-		PreparedStatement stmt = PitakaSql.getAddDictMetaStmt();
-		stmt.setInt(1, dict.getEntryCount());
-		stmt.setString(2, dict.getName());
-		stmt.setString(3, dict.getAuthor());
-		stmt.executeUpdate();
-		ResultSet rs = stmt.getGeneratedKeys();
-		int key = 0;
-		if (rs.next()) {
-			key = rs.getInt(1);
+		int key;
+		if (!isDictAlreadyImported(dict)) {
+
+			PreparedStatement stmt;
+			ResultSet rs;
+
+			stmt = PitakaSql.getMaxUseIdStmt();
+			rs = stmt.executeQuery();
+			rs.next();
+			int useid = rs.getInt(1);
+			useid++;
+			rs.close();
+
+			stmt = PitakaSql.getAddDictMetaStmt();
+			stmt.setInt(1, dict.getEntryCount());
+			stmt.setString(2, dict.getName());
+			stmt.setString(3, dict.getAuthor());
+			stmt.setString(4, "Y");
+			stmt.setShort(5, (short) useid);
+			stmt.executeUpdate();
+			rs = stmt.getGeneratedKeys();
+			key = 0;
+			if (rs.next()) {
+				key = rs.getInt(1);
+			}
+			rs.close();
+		} else {
+			key = -1;
 		}
-		rs.close();
 		return key;
 	}
 
@@ -146,7 +166,7 @@ public class DictManagement {
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 
 		int loopCount = dict.getEntryCount() / PitakaSql.DEFAULT_STMT_SIZE;
-		
+
 		ResultSet rs = countStmt.executeQuery();
 		rs.next();
 		int defCount = rs.getInt(1);
@@ -154,13 +174,13 @@ public class DictManagement {
 		rs.close();
 
 		for (int n = 0; n < loopCount; n++) {
-			
+
 			int defIndex = 1;
 			int wordIndex = 1;
-			
+
 			defsStmt = PitakaSql.getAdd100DefsStmt();
 			wordStmt = PitakaSql.getAdd100WordsStmt();
-			
+
 			for (int m = 0; m < PitakaSql.DEFAULT_STMT_SIZE; m++) {
 				dict.hasNext();
 				IDictEntry entry = dict.next();
@@ -191,11 +211,11 @@ public class DictManagement {
 				PitakaSql.DEFAULT_STMT_SIZE);
 		List<String> lastHash = new ArrayList<String>(
 				PitakaSql.DEFAULT_STMT_SIZE);
-		
+
 		while (dict.hasNext()) {
-			IDictEntry entry = dict.next();			
+			IDictEntry entry = dict.next();
 			String def = entry.getDefinition();
-			
+
 			byte[] bytes = md5.digest(def.getBytes());
 			String hash = byteToHex(bytes);
 			md5.reset();
@@ -204,15 +224,31 @@ public class DictManagement {
 			lastDefs.add(def);
 			lastHash.add(hash);
 		}
-		
+
 		Statement stmt = conn.createStatement();
-		
-		String lastDefsStmt = PitakaSql.getLastDefsStmt(defCount, dictKey, lastDefs,
-				lastHash);		
+
+		String lastDefsStmt = PitakaSql.getLastDefsStmt(defCount, dictKey,
+				lastDefs, lastHash);
 		String lastWordStmt = PitakaSql.getLastWordStmt(lastWord, defCount);
-		
-		stmt.executeUpdate(lastDefsStmt);		
+
+		stmt.executeUpdate(lastDefsStmt);
 		stmt.executeUpdate(lastWordStmt);
+	}
+
+	private boolean isDictAlreadyImported(IDict dict) throws SQLException {
+
+		List<String> dictNames = new ArrayList<String>();
+		PreparedStatement stmt = PitakaSql.getAllDictNamesStmt();
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next()) {
+			dictNames.add(rs.getString(1));
+		}
+		rs.close();
+		if (dictNames.contains(dict.getName())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

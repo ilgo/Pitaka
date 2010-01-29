@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
-public class DictView extends ViewPart {
+public class DefinitionView extends ViewPart {
 
-	public static final String ID = "zen.ilgo.pitaka.dict.DictView";
+	public static final String ID = "pitaka.dict.DefinitionView";
 	private static Text textArea;
 
 	private Font font;

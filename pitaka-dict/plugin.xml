@@ -5,10 +5,17 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="zen.ilgo.pitaka.dict.DictView"
+            class="zen.ilgo.pitaka.dict.DefinitionView"
             icon="icons/dict.png"
-            id="zen.ilgo.pitaka.dict.DictView"
+            id="pitaka.dict.DefinitionView"
             name="Dict Definitions"
+            restorable="true">
+      </view>
+      <view
+            class="zen.ilgo.pitaka.dict.DictManageView"
+            icon="icons/dict_add.png"
+            id="pitaka.dict.DictManageView"
+            name="Dict Manage"
             restorable="true">
       </view>
    </extension>
@@ -57,7 +64,14 @@
                   visible="true">
             </separator>
             <command
+                  commandId="pitaka.dict.ShowDefinitionViewHandler"
+                  icon="icons/dict.png"
+                  label="Show Definition View"
+                  style="push">
+            </command>
+            <command
                   commandId="pitaka.dict.ShowDictViewHandler"
+                  icon="icons/dict_add.png"
                   label="Show Dict View"
                   style="push">
             </command>
@@ -75,6 +89,11 @@
             defaultHandler="zen.ilgo.pitaka.dict.commands.DeleteDictHandler"
             id="pitaka.dict.DeleteDictHandler"
             name="DelDict">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.dict.commands.ShowDefinitionViewHandler"
+            id="pitaka.dict.ShowDefinitionViewHandler"
+            name="Show Definition View">
       </command>
       <command
             defaultHandler="zen.ilgo.pitaka.dict.commands.ShowDictViewHandler"
