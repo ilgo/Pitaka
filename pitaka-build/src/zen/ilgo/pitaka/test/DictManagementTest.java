@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.dict.zip.DictzipException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import zen.ilgo.pitaka.dict.star.Stardict;
 
 public class DictManagementTest {
 
-	static final String dictName = "Bulkwang";
+	static final String dictName = "dict_1";
 	
 	static DictManagement instance;
 	static Statement stmt;
@@ -40,9 +41,9 @@ public class DictManagementTest {
 	}
 
 	@Test
-	public void testAddDict() throws IOException, SQLException {
+	public void testAddDict() throws IOException, SQLException, DictzipException {
 
-		File ifo = new File("/home/ilgo/.stardict/dic/" + dictName + ".ifo");
+		File ifo = new File("resources/testDicts/" + dictName + ".ifo");
 		IDict dict = new Stardict(ifo);
 		instance.importDict(dict);
 		ResultSet rs = stmt.executeQuery(wordsCheck);
