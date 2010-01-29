@@ -221,7 +221,7 @@ public class PitakaSql {
 	
 	private static void generateDictSearchPrefStmt() {
 
-		String sql = "SELECT name, used, useid FROM meta";
+		String sql = "SELECT name, used, useid FROM meta ORDER BY useid";
 		try {
 			dictSearchPrefStmt = conn.prepareStatement(sql);
 		} catch (SQLException e) {
