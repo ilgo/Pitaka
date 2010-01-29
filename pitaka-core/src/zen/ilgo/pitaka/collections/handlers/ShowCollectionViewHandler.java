@@ -1,9 +1,13 @@
-package zen.ilgo.pitaka.db.handlers;
+package zen.ilgo.pitaka.collections.handlers;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+
+import zen.ilgo.pitaka.collections.CollectionsView;
 
 public class ShowCollectionViewHandler implements IHandler {
 
@@ -21,20 +25,23 @@ public class ShowCollectionViewHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		// TODO Auto-generated method stub
+		
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(CollectionsView.ID);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		} 	
 		return null;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isHandled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

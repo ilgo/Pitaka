@@ -7,9 +7,9 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import zen.ilgo.pitaka.dict.DictManageView;
+import zen.ilgo.pitaka.dict.DefinitionView;
 
-public class ShowDictViewHandler implements IHandler {
+public class ShowDefinitionViewHandler implements IHandler {
 
 	@Override
 	public void addHandlerListener(IHandlerListener handlerListener) {
@@ -25,14 +25,13 @@ public class ShowDictViewHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
+		
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().showView(DictManageView.ID);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(DefinitionView.ID);
 		} catch (PartInitException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 	
 		return null;
 	}
 
