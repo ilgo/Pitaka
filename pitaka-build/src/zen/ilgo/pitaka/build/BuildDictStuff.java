@@ -70,7 +70,9 @@ public class BuildDictStuff {
 			+ "	id INT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
 			+ "	size INT NOT NULL,"
 			+ "	name VARCHAR(256) NOT NULL,"
-			+ "	author VARCHAR(256) )";
+			+ "	author VARCHAR(256),"
+			+ " used CHAR(1) NOT NULL CONSTRAINT usedConst CHECK (used IN ('Y', 'N')), "
+			+ " useid SMALLINT NOT NULL )";
 
 	private final String createDefsTable = "CREATE TABLE defs ( "
 			+ "	id INT NOT NULL PRIMARY KEY,"

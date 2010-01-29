@@ -7,5 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pitaka-dict"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pitaka-server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/pitaka-core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
