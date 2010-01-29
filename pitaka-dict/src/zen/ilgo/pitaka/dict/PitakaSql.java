@@ -21,6 +21,9 @@ public class PitakaSql {
 	private static PreparedStatement removeDictStmt = null;
 	private static PreparedStatement countDefsStmt = null;
 	private static PreparedStatement wordDefStmt = null;
+	private static PreparedStatement maxUseIdStmt = null;
+	private static PreparedStatement allDictNamesStmt = null;
+	private static PreparedStatement dictSearchPrefStmt = null;
 
 	public static PreparedStatement getAddDictMetaStmt() {
 		if (addDictMetaStmt == null) {
@@ -62,6 +65,27 @@ public class PitakaSql {
 			generateWordDefStmt();
 		}
 		return wordDefStmt;
+	}
+	
+	public static PreparedStatement getAllDictNamesStmt() {
+		if (allDictNamesStmt == null) {
+			generateAllDictNamesStmt();
+		}
+		return allDictNamesStmt;
+	}
+	
+	public static PreparedStatement getMaxUseIdStmt() {
+		if (maxUseIdStmt == null) {
+			generateMaxUseIdStmt();
+		}
+		return maxUseIdStmt;
+	}
+	
+	public static PreparedStatement getDictSearchPrefStmt() {
+		if (dictSearchPrefStmt == null) {
+			generateDictSearchPrefStmt();
+		}
+		return dictSearchPrefStmt;
 	}
 
 	public static String getAddDefsSql(int n) {
@@ -108,7 +132,7 @@ public class PitakaSql {
 
 	private static void generateAddDictMetaStmt() {
 
-		String sql = "INSERT INTO meta (size, name, author) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO meta (size, name, author, used, useid) VALUES (?, ?, ?, ?, ?)";
 		try {
 			addDictMetaStmt = conn.prepareStatement(sql,
 					Statement.RETURN_GENERATED_KEYS);
@@ -161,10 +185,10 @@ public class PitakaSql {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void generateWordDefStmt() {
-		
-		String sql = "SELECT def FROM defs JOIN words ON defid = id WHERE word = ?"; 
+
+		String sql = "SELECT def FROM defs JOIN words ON defid = id WHERE word = ?";
 		try {
 			wordDefStmt = conn.prepareStatement(sql);
 		} catch (SQLException e) {
@@ -172,7 +196,40 @@ public class PitakaSql {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void generateMaxUseIdStmt() {
 
+		String sql = "SELECT max(useid) FROM meta";
+		try {
+			maxUseIdStmt = conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void generateAllDictNamesStmt() {
+
+		String sql = "SELECT name FROM meta";
+		try {
+			allDictNamesStmt = conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void generateDictSearchPrefStmt() {
+
+		String sql = "SELECT name, used, useid FROM meta";
+		try {
+			dictSearchPrefStmt = conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private static String generateAddDefsSql(int n) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT INTO defs (id, dictid, def, md5) VALUES \n");
