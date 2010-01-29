@@ -18,8 +18,8 @@ public class BuildDictStuff {
 		try {
 			initDerby();
 			loadTables();
+			loadTriggers();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			shutdownDerby();
@@ -39,9 +39,19 @@ public class BuildDictStuff {
 
 	private void loadTables() throws SQLException {
 
-		String[] createStatements = { createMetaTable, createDefsTable,
+		String[] tableStatements = { createMetaTable, createDefsTable,
 				createWordTable };
-		for (String sql : createStatements) {
+		executeCreationStatements(tableStatements);
+	}
+	
+	private void loadTriggers() throws SQLException {
+
+		String[] triggerStatements = { createAddDictTrigger, createRemoveDictTrigger };
+		executeCreationStatements(triggerStatements);
+	}
+	
+	private void executeCreationStatements(String[] statements) throws SQLException {
+		for (String sql : statements) {
 			s.execute(sql);
 			System.out.println("Created Table: " + sql);
 		}
@@ -88,6 +98,16 @@ public class BuildDictStuff {
 			+ " PRIMARY KEY (word, defid), "
 			+ " CONSTRAINT defs_fk FOREIGN KEY (defid)"
 			+ " REFERENCES defs ( id ) ON DELETE CASCADE ON UPDATE RESTRICT )";
+
+	private final String createAddDictTrigger = "CREATE TRIGGER addDictTrigger "
+			+ " AFTER INSERT ON meta "
+			+ " FOR EACH ROW "
+			+ " UPDATE meta SET useid = MAX(useid) + 1 WHERE id = MAX(id) ";
+
+	private final String createRemoveDictTrigger = "CREATE TRIGGER removeDictTrigger "
+			+ " BEFORE DELETE ON meta "
+			+ " FOR EACH ROW "
+			+ " UPDATE meta SET useid = useid - 1 WHERE id = MAX(id) ";
 
 	/**
 	 * needed for the ant build script.
