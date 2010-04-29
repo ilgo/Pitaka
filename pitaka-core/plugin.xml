@@ -37,7 +37,7 @@
             class="zen.ilgo.pitaka.collections.CollectionsView"
             icon="icons/house.png"
             id="zen.ilgo.pitaka.core.collections"
-            name="CollectionsView"
+            name="Texts"
             restorable="true">
       </view>
    </extension>
@@ -82,6 +82,21 @@
             defaultHandler="zen.ilgo.pitaka.collections.handlers.CreateCollectionFromDir"
             id="zen.ilgo.pitaka.collections.CollectionFromDir"
             name="Collection from Directory">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.ShowCollectionViewHandler"
+            id="pitaka.db.ShowCollectionViewHandler"
+            name="Show Collection View">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.CollectionInfoHandler"
+            id="pitaka.db.CollectionInfoHandler"
+            name="Collection Info">
+      </command>
+      <command
+            defaultHandler="zen.ilgo.pitaka.collections.handlers.TextInfoHandler"
+            id="pitaka.db.TextInfoHandler"
+            name="Text Info">
       </command>
    </extension>
    <extension
@@ -190,9 +205,37 @@
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
-               label="label">
+               id="pitaka.main.menu.texts"
+               label="Texts">
+            <command
+                  commandId="pitaka.db.CollectionInfoHandler"
+                  label="Collection Info"
+                  style="push">
+            </command>
+            <command
+                  commandId="pitaka.db.TextInfoHandler"
+                  label="Text Info"
+                  style="push">
+            </command>
+            <separator
+                  name="db.menu.separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="pitaka.db.ShowCollectionViewHandler"
+                  label="Show Collection View"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="pitaka.main.menu.prefs"
+               label="Preferences">
+         </menu>
+         <menu
+               id="about"
+               label="About">
          </menu>
       </menuContribution>
    </extension>

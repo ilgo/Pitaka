@@ -9,3 +9,5 @@ exist-libs*
 */bin/*
 *~
 pitaka-build/TEST-*
+*.log
+

@@ -1,0 +1,22 @@
+What has been done..and need to be done..
+
+the one important thing not finished right now is the database issue
+with dict selection priorities. that is the assignment and cleanup of meta.useid
+when adding or deleting a dict.
+i need to implement triggers when doing database creation, that automatically
+update the latest useid. also when deleting an existing dict with a useid less than the last one
+all dict with higher useid's need to be adjusted by decrementing their useid's.
+
+Add and delete Dict Handlers are to be run as eclipse jobs with progress monitors. 
+since those methods can take up considerable time and also will freeze the UI.
+
+when searching for a definition, the output has to be formatted for multiple dicts.
+also the sql statement needs to be changed so that the meta.used and meta.useid will
+be taken into consideration when executing the statement.
+
+----------------------------------
+Things undone.. but on the list
+
+fop for pdf creation.
+searching texts and dicts
+etc....see Roadmap.txt

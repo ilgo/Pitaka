@@ -1,11 +1,11 @@
-package zen.ilgo.pitaka.db.handlers;
+package zen.ilgo.pitaka.collections.handlers;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 
-public class TextInfoHandler implements IHandler {
+public class CollectionInfoHandler implements IHandler {
 
 	@Override
 	public void addHandlerListener(IHandlerListener handlerListener) {

@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: pitaka.db
-Bundle-SymbolicName: zen.ilgo.pitaka.db
+Bundle-Name: zen.ilgo.pitaka.db
+Bundle-SymbolicName: zen.ilgo.pitaka.db;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: zen.ilgo.pitaka.db.Activator
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: libs/antlr-2.7.7.jar,
